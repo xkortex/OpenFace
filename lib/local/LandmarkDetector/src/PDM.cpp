@@ -704,7 +704,7 @@ void PDM::CalcParams(cv::Vec6f& out_params_global, cv::Mat_<float>& out_params_l
 
 }
 
-bool PDM::Read(string location)
+bool PDM::Read(std::string location)
 {
 
 	ifstream pdmLoc(location, ios_base::in);

@@ -35,10 +35,7 @@
 #include "ImageManipulationHelpers.h"
 #include <iostream>
 
-// Boost includes
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
-#include <boost/algorithm/string.hpp>
+#include <filesystem>
 
 // OpenCV includes
 #include <opencv2/imgproc.hpp>
@@ -69,7 +66,7 @@ bool ImageCapture::Open(std::vector<std::string>& arguments)
 	std::string input_root = "";
 	fx = -1; fy = -1; cx = -1; cy = -1;
 
-	std::string separator = std::string(1, boost::filesystem::path::preferred_separator);
+	std::string separator = std::string(1, std::filesystem::path::preferred_separator);
 
 	// First check if there is a root argument (so that videos and input directories could be defined more easily)
 	for (size_t i = 0; i < arguments.size(); ++i)
@@ -224,16 +221,16 @@ bool ImageCapture::OpenDirectory(std::string directory, std::string bbox_directo
 
 	image_files.clear();
 
-	boost::filesystem::path image_directory(directory);
-	std::vector<boost::filesystem::path> file_in_directory;
-	copy(boost::filesystem::directory_iterator(image_directory), boost::filesystem::directory_iterator(), back_inserter(file_in_directory));
+	std::filesystem::path image_directory(directory);
+	std::vector<std::filesystem::path> file_in_directory;
+	copy(std::filesystem::directory_iterator(image_directory), std::filesystem::directory_iterator(), back_inserter(file_in_directory));
 
 	// Sort the images in the directory first
 	sort(file_in_directory.begin(), file_in_directory.end());
 
 	std::vector<std::string> curr_dir_files;
 
-	for (std::vector<boost::filesystem::path>::const_iterator file_iterator(file_in_directory.begin()); file_iterator != file_in_directory.end(); ++file_iterator)
+	for (std::vector<std::filesystem::path>::const_iterator file_iterator(file_in_directory.begin()); file_iterator != file_in_directory.end(); ++file_iterator)
 	{
 		// Possible image extension .jpg and .png
 		if (file_iterator->extension().string().compare(".jpg") == 0 || file_iterator->extension().string().compare(".jpeg") == 0 || file_iterator->extension().string().compare(".png") == 0 || file_iterator->extension().string().compare(".bmp") == 0)
@@ -243,11 +240,11 @@ bool ImageCapture::OpenDirectory(std::string directory, std::string bbox_directo
 			// If bounding box directory is specified, read the bounding boxes from it
 			if (!bbox_directory.empty())
 			{
-				boost::filesystem::path current_file = *file_iterator;
-				boost::filesystem::path bbox_file = bbox_directory / current_file.filename().replace_extension("txt");
+				std::filesystem::path current_file = *file_iterator;
+				std::filesystem::path bbox_file = bbox_directory / current_file.filename().replace_extension("txt");
 				
 				// If there is a bounding box file push it to the list of bounding boxes
-				if (boost::filesystem::exists(bbox_file))
+				if (std::filesystem::exists(bbox_file))
 				{
 					std::ifstream in_bbox(bbox_file.string().c_str(), std::ios_base::in);
 

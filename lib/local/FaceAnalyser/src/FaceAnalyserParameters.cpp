@@ -39,11 +39,11 @@
 #include <iostream>
 #include <cstdlib>
 
+#include <filesystem>
+
 #ifndef CONFIG_DIR
 #define CONFIG_DIR "~"
 #endif
-
-using namespace std;
 
 using namespace FaceAnalysis;
 
@@ -63,7 +63,7 @@ FaceAnalyserParameters::FaceAnalyserParameters(vector<string> &arguments):root()
 {
 
 	// First element is reserved for the executable location (useful for finding relative model locs)
-	this->root = boost::filesystem::path(arguments[0]).parent_path();
+	this->root = std::filesystem::path(arguments[0]).parent_path();
 
 	// initialise the default values
 	init();
@@ -133,17 +133,17 @@ FaceAnalyserParameters::FaceAnalyserParameters(vector<string> &arguments):root()
 
 	// Make sure model_location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	boost::filesystem::path config_path = boost::filesystem::path(CONFIG_DIR);
-	boost::filesystem::path model_path = boost::filesystem::path(this->model_location);
-	if (boost::filesystem::exists(model_path))
+	std::filesystem::path config_path = std::filesystem::path(CONFIG_DIR);
+	std::filesystem::path model_path = std::filesystem::path(this->model_location);
+	if (std::filesystem::exists(model_path))
 	{
 		this->model_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root/model_path))
+	else if (std::filesystem::exists(root/model_path))
 	{
 		this->model_location = (root/model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path/model_path))
+	else if (std::filesystem::exists(config_path/model_path))
 	{
 		this->model_location = (config_path/model_path).string();
 	}
@@ -166,17 +166,17 @@ void FaceAnalyserParameters::init()
 
 	// Make sure model_location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	boost::filesystem::path config_path = boost::filesystem::path(CONFIG_DIR);
-	boost::filesystem::path model_path = boost::filesystem::path(this->model_location);
-	if (boost::filesystem::exists(model_path))
+	std::filesystem::path config_path = std::filesystem::path(CONFIG_DIR);
+	std::filesystem::path model_path = std::filesystem::path(this->model_location);
+	if (std::filesystem::exists(model_path))
 	{
 		this->model_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root / model_path))
+	else if (std::filesystem::exists(root / model_path))
 	{
 		this->model_location = (root / model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path / model_path))
+	else if (std::filesystem::exists(config_path / model_path))
 	{
 		this->model_location = (config_path / model_path).string();
 	}
@@ -216,17 +216,17 @@ void FaceAnalyserParameters::OptimizeForVideos()
 
 	// Make sure model_location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	boost::filesystem::path config_path = boost::filesystem::path(CONFIG_DIR);
-	boost::filesystem::path model_path = boost::filesystem::path(this->model_location);
-	if (boost::filesystem::exists(model_path))
+	std::filesystem::path config_path = std::filesystem::path(CONFIG_DIR);
+	std::filesystem::path model_path = std::filesystem::path(this->model_location);
+	if (std::filesystem::exists(model_path))
 	{
 		this->model_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root / model_path))
+	else if (std::filesystem::exists(root / model_path))
 	{
 		this->model_location = (root / model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path / model_path))
+	else if (std::filesystem::exists(config_path / model_path))
 	{
 		this->model_location = (config_path / model_path).string();
 	}
@@ -246,17 +246,17 @@ void FaceAnalyserParameters::OptimizeForImages()
 
 	// Make sure model_location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	boost::filesystem::path config_path = boost::filesystem::path(CONFIG_DIR);
-	boost::filesystem::path model_path = boost::filesystem::path(this->model_location);
-	if (boost::filesystem::exists(model_path))
+	std::filesystem::path config_path = std::filesystem::path(CONFIG_DIR);
+	std::filesystem::path model_path = std::filesystem::path(this->model_location);
+	if (std::filesystem::exists(model_path))
 	{
 		this->model_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root / model_path))
+	else if (std::filesystem::exists(root / model_path))
 	{
 		this->model_location = (root / model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path / model_path))
+	else if (std::filesystem::exists(config_path / model_path))
 	{
 		this->model_location = (config_path / model_path).string();
 	}

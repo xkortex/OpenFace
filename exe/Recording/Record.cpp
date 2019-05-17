@@ -49,8 +49,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
+#include <filesystem>
 
 #define INFO_STREAM( stream ) \
 std::cout << stream << std::endl
@@ -152,8 +151,8 @@ int main (int argc, char **argv)
 	cv::Mat img;
 	vCap >> img;
 			
-	boost::filesystem::path dir(outroot);
-	boost::filesystem::create_directory(dir);
+	std::filesystem::path dir(outroot);
+	std::filesystem::create_directory(dir);
 
 	string out_file = outroot + outfile;
 	// saving the videos

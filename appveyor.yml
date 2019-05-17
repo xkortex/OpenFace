@@ -3,6 +3,7 @@ branches:
   only:
   - develop
   - master
+  - feature/boost_removal
 max_jobs: 4  
 configuration:
 - Release
@@ -26,7 +27,7 @@ install:
   - ps: Invoke-WebRequest $source -OutFile $destination
 
 build:
-  project: OpenFace.sln
+  project: OpenFace_vs2017.sln
   verbosity: minimal
 test_script:
 # C++  

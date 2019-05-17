@@ -34,15 +34,13 @@
 #include <iostream>
 #include <sstream>
 
+#include <filesystem>
+
 #include <vector>
 #include <map>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
-
-// Boost stuff
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
 
 // OpenBLAS stuff
 

@@ -45,11 +45,9 @@ target_include_directories(LandmarkDetector PUBLIC
     $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/OpenFace>)
 
 target_include_directories(LandmarkDetector PRIVATE ${LandmarkDetector_SOURCE_DIR}/include)
-target_include_directories(LandmarkDetector PUBLIC ${Boost_INCLUDE_DIRS})
-target_include_directories(LandmarkDetector PUBLIC ${Boost_INCLUDE_DIRS}/boost)
 target_include_directories(LandmarkDetector PUBLIC ${OpenCV_INCLUDE_DIRS})
 
-target_link_libraries(LandmarkDetector PUBLIC ${OpenCV_LIBS} ${Boost_LIBRARIES} ${OpenBLAS_LIB})
+target_link_libraries(LandmarkDetector PUBLIC ${OpenCV_LIBS} ${OpenBLAS_LIB})
 target_link_libraries(LandmarkDetector PUBLIC dlib::dlib)
 
 target_include_directories(LandmarkDetector PRIVATE ${OpenBLAS_INCLUDE_DIR})

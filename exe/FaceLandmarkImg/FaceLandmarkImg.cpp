@@ -52,8 +52,6 @@
 #define CONFIG_DIR "~"
 #endif
 
-using namespace std;
-
 vector<string> get_arguments(int argc, char **argv)
 {
 

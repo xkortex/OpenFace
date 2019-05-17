@@ -48,23 +48,10 @@
 
 #include <opencv2/opencv.hpp>
 
-// Allows to overcome boost name clash stuff with C++ CLI
-#ifdef __cplusplus_cli
-#define generic __identifier(generic)
-#endif
-
 #include <OpenCVWrappers.h>
 #include <Face_utils.h>
 #include <FaceAnalyser.h>
 #include <VisualizationUtils.h>
-
-// Boost stuff
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
-
-#ifdef __cplusplus_cli
-#undef generic
-#endif
 
 #pragma managed
 

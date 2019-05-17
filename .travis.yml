@@ -7,6 +7,7 @@ branches:
   only:
     - master
     - develop
+    - feature/boost_removal
 compiler:
   - gcc
 
@@ -16,14 +17,13 @@ os:
 
 before_install:
 
-  # OpenCV dependencies, dlib and boost
+  # OpenCV dependencies, dlib, openblas, and tbb
   - if [ ${TRAVIS_OS_NAME} = linux ]; then  
       sudo apt-get update;
       sudo apt-get install libopenblas-dev;
       sudo apt-get install git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev;
       sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev;
       sudo apt-get install cmake;
-      sudo apt-get install libboost-all-dev;
       wget http://dlib.net/files/dlib-19.13.tar.bz2;
       tar xf dlib-19.13.tar.bz2;
       cd dlib-19.13;
@@ -77,7 +77,7 @@ script:
   - ./download_models.sh
   - mkdir build
   - cd build
-  - cmake -D CMAKE_BUILD_TYPE=RELEASE CMAKE_CXX_FLAGS="-std=c++11" -D CMAKE_EXE_LINKER_FLAGS="-std=c++11" .. 
+  - cmake -D CMAKE_BUILD_TYPE=RELEASE CMAKE_CXX_FLAGS="-std=c++17" -D CMAKE_EXE_LINKER_FLAGS="-std=c++17" .. 
   - make
   - ../build/bin/FeatureExtraction -f "../samples/2015-10-15-15-14.avi" -q -mloc model/main_clm_general.txt
   - ../build/bin/FaceLandmarkImg -fdir ../samples -out_dir data -multi_view 1 -wild -q

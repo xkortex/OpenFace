@@ -39,9 +39,7 @@
 #include <vector>
 #include <opencv2/core/core.hpp>
 
-// Boost includes
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
+#include <filesystem>
 
 using namespace std;
 
@@ -93,7 +91,7 @@ private:
 	// Where to load the models from
 	string model_location;
 	// The location of the executable
-	boost::filesystem::path root;
+	std::filesystem::path root;
 
 	vector<cv::Vec3d> orientation_bins;
 

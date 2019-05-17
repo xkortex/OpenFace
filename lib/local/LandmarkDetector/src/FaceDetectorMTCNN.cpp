@@ -47,11 +47,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-// Boost includes
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
-
-
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -428,7 +423,7 @@ void FaceDetectorMTCNN::Read(const string& location)
 	string line;
 
 	// The other module locations should be defined as relative paths from the main model
-	boost::filesystem::path root = boost::filesystem::path(location).parent_path();
+	std::filesystem::path root = std::filesystem::path(location).parent_path();
 
 	// The main file contains the references to other files
 	while (!locations.eof())

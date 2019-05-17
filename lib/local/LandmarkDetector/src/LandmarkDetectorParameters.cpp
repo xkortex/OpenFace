@@ -36,10 +36,6 @@
 
 #include "LandmarkDetectorParameters.h"
 
-// Boost includes
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
-
 // System includes
 #include <sstream>
 #include <iostream>
@@ -67,7 +63,7 @@ FaceModelParameters::FaceModelParameters(vector<string> &arguments)
 	init();
 
 	// First element is reserved for the executable location (useful for finding relative model locs)
-	boost::filesystem::path root = boost::filesystem::path(arguments[0]).parent_path();
+	std::filesystem::path root = std::filesystem::path(arguments[0]).parent_path();
 
 	bool* valid = new bool[arguments.size()];
 	valid[0] = true;
@@ -182,17 +178,17 @@ FaceModelParameters::FaceModelParameters(vector<string> &arguments)
 
 	// Make sure model_location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	boost::filesystem::path config_path = boost::filesystem::path(CONFIG_DIR);
-	boost::filesystem::path model_path = boost::filesystem::path(model_location);
-	if (boost::filesystem::exists(model_path))
+	std::filesystem::path config_path = std::filesystem::path(CONFIG_DIR);
+	std::filesystem::path model_path = std::filesystem::path(model_location);
+	if (std::filesystem::exists(model_path))
 	{
 		model_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root/model_path))
+	else if (std::filesystem::exists(root/model_path))
 	{
 		model_location = (root/model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path/model_path))
+	else if (std::filesystem::exists(config_path/model_path))
 	{
 		model_location = (config_path/model_path).string();
 	}
@@ -218,16 +214,16 @@ FaceModelParameters::FaceModelParameters(vector<string> &arguments)
 
 	// Make sure face detector location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	model_path = boost::filesystem::path(haar_face_detector_location);
-	if (boost::filesystem::exists(model_path))
+	model_path = std::filesystem::path(haar_face_detector_location);
+	if (std::filesystem::exists(model_path))
 	{
 		haar_face_detector_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root / model_path))
+	else if (std::filesystem::exists(root / model_path))
 	{
 		haar_face_detector_location = (root / model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path / model_path))
+	else if (std::filesystem::exists(config_path / model_path))
 	{
 		haar_face_detector_location = (config_path / model_path).string();
 	}
@@ -238,16 +234,16 @@ FaceModelParameters::FaceModelParameters(vector<string> &arguments)
 
 	// Make sure face detector location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	model_path = boost::filesystem::path(mtcnn_face_detector_location);
-	if (boost::filesystem::exists(model_path))
+	model_path = std::filesystem::path(mtcnn_face_detector_location);
+	if (std::filesystem::exists(model_path))
 	{
 		mtcnn_face_detector_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root / model_path))
+	else if (std::filesystem::exists(root / model_path))
 	{
 		mtcnn_face_detector_location = (root / model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path / model_path))
+	else if (std::filesystem::exists(config_path / model_path))
 	{
 		mtcnn_face_detector_location = (config_path / model_path).string();
 	}
@@ -262,19 +258,19 @@ void FaceModelParameters::check_model_path(const std::string& root)
 {
 	// Make sure model_location is valid
 	// First check working directory, then the executable's directory, then the config path set by the build process.
-	boost::filesystem::path config_path = boost::filesystem::path(CONFIG_DIR);
-	boost::filesystem::path model_path = boost::filesystem::path(model_location);
-	boost::filesystem::path root_path = boost::filesystem::path(root);
+	std::filesystem::path config_path = std::filesystem::path(CONFIG_DIR);
+	std::filesystem::path model_path = std::filesystem::path(model_location);
+	std::filesystem::path root_path = std::filesystem::path(root);
 
-	if (boost::filesystem::exists(model_path))
+	if (std::filesystem::exists(model_path))
 	{
 		model_location = model_path.string();
 	}
-	else if (boost::filesystem::exists(root_path / model_path))
+	else if (std::filesystem::exists(root_path / model_path))
 	{
 		model_location = (root_path / model_path).string();
 	}
-	else if (boost::filesystem::exists(config_path / model_path))
+	else if (std::filesystem::exists(config_path / model_path))
 	{
 		model_location = (config_path / model_path).string();
 	}

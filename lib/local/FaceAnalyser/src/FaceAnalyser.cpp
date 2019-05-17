@@ -44,19 +44,17 @@
 #include <iomanip>
 
 #include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
 
-// Boost includes
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include <filesystem>
 
 // Local includes
 #include "Face_utils.h"
 
 using namespace FaceAnalysis;
-
-using namespace std;
 
 // Constructor from a model file (or a default one if not provided
 FaceAnalyser::FaceAnalyser(const FaceAnalysis::FaceAnalyserParameters& face_analyser_params)
@@ -322,7 +320,6 @@ void FaceAnalyser::PredictStaticAUsAndComputeFeatures(const cv::Mat& frame, cons
 	AU_predictions_class = AU_predictions_occurence;
 
 }
-
 
 void FaceAnalyser::AddNextFrame(const cv::Mat& frame, const cv::Mat_<float>& detected_landmarks, bool success, double timestamp_seconds, bool online)
 {
@@ -1034,7 +1031,7 @@ void FaceAnalyser::Read(std::string model_loc)
 	string line;
 
 	// The other module locations should be defined as relative paths from the main model
-	boost::filesystem::path root = boost::filesystem::path(model_loc).parent_path();
+	std::filesystem::path root = std::filesystem::path(model_loc).parent_path();
 
 	// The main file contains the references to other files
 	while (!locations.eof())
@@ -1085,6 +1082,23 @@ void FaceAnalyser::Read(std::string model_loc)
 
 }
 
+// Split the string into tokens
+static void split(const std::string& str, std::vector<string>& out, char delim = ' ')
+{
+	std::stringstream ss(str);
+	std::string token;
+	while (std::getline(ss, token, delim)) {
+		out.push_back(token);
+	}
+}
+
+// Trim the end of a string (in place)
+static void rtrim(std::string &s) {
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+		return !std::isspace(ch);
+	}).base(), s.end());
+}
+
 // Reading in AU prediction modules
 void FaceAnalyser::ReadAU(std::string au_model_location)
 {
@@ -1102,7 +1116,7 @@ void FaceAnalyser::ReadAU(std::string au_model_location)
 	string line;
 	
 	// The other module locations should be defined as relative paths from the main model
-	boost::filesystem::path root = boost::filesystem::path(au_model_location).parent_path();		
+	std::filesystem::path root = std::filesystem::path(au_model_location).parent_path();		
 	
 	// The main file contains the references to other files
 	while (!locations.eof())
@@ -1129,7 +1143,7 @@ void FaceAnalyser::ReadAU(std::string au_model_location)
 			name.erase(name.find_last_not_of(" \n\r\t") + 1);
 		}
 		vector<string> au_names;
-		boost::split(au_names, name, boost::is_any_of(","));
+		split(name, au_names, ',');
 
 		// append the lovstion to root location (boost syntax)
 		location = (root / location).string();
@@ -1321,7 +1335,7 @@ void FaceAnalyser::PostprocessOutputFile(string output_file)
 
 	// Read the header and find all _r and _c parts in a file and use their indices
 	std::vector<std::string> tokens;
-	boost::split(tokens, output_file_contents[0], boost::is_any_of(","));
+	split(output_file_contents[0], tokens, ',');
 
 	int begin_ind = -1;
 
@@ -1348,9 +1362,9 @@ void FaceAnalyser::PostprocessOutputFile(string output_file)
 	for (int i = 1; i < (int)output_file_contents.size(); ++i)
 	{
 		std::vector<std::string> tokens;
-		boost::split(tokens, output_file_contents[i], boost::is_any_of(","));
+		split(output_file_contents[i], tokens, ',');
 
-		boost::trim(tokens[0]);
+		rtrim(tokens[0]);
 		outfile << tokens[0];
 
 		for (int t = 1; t < (int)tokens.size(); ++t)
@@ -1368,7 +1382,7 @@ void FaceAnalyser::PostprocessOutputFile(string output_file)
 			}
 			else
 			{
-				boost::trim(tokens[t]);
+				rtrim(tokens[t]);
 				outfile << ", " << tokens[t];
 			}
 		}

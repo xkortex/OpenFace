@@ -36,10 +36,6 @@
 
 #include <LandmarkDetectorModel.h>
 
-// Boost includes
-#include <filesystem.hpp>
-#include <filesystem/fstream.hpp>
-
 // Local includes
 #include <LandmarkDetectorUtils.h>
 #include <RotationHelpers.h>
@@ -267,7 +263,7 @@ bool CLNF::Read_CLNF(string clnf_location)
 	string early_term_loc;
 
 	// The other module locations should be defined as relative paths from the main model
-	boost::filesystem::path root = boost::filesystem::path(clnf_location).parent_path();
+	std::filesystem::path root = std::filesystem::path(clnf_location).parent_path();
 
 	// The main file contains the references to other files
 	while (!locations.eof())
@@ -379,7 +375,7 @@ void CLNF::Read(string main_location)
 	string line;
 	
 	// The other module locations should be defined as relative paths from the main model
-	boost::filesystem::path root = boost::filesystem::path(main_location).parent_path();	
+	std::filesystem::path root = std::filesystem::path(main_location).parent_path();	
 
 	// Assume no eye model, unless read-in
 	eye_model = false;
@@ -453,7 +449,7 @@ void CLNF::Read(string main_location)
 			this->hierarchical_model_names.push_back(part_name);
 
 			// Making sure we look based on model directory
-			std::string root_loc = boost::filesystem::path(main_location).parent_path().string();
+			std::string root_loc = std::filesystem::path(main_location).parent_path().string();
 			std::vector<string> sub_arguments{ root_loc };
 			
 			FaceModelParameters params(sub_arguments);
