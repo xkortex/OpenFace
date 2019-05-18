@@ -123,13 +123,11 @@ endforeach()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-    if (GCC_VERSION VERSION_LESS 4.7)
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -msse -msse2 -msse3")
+    if (GCC_VERSION VERSION_LESS 8.0)
+		MESSAGE(FATAL_ERROR "Need a 8.0 or newer GCC compiler") 
     else ()
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -msse -msse2 -msse3")
+        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lstdc++fs -msse -msse2 -msse3")
     endif ()
-else ()
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -msse -msse2 -msse3")
 endif ()
 
 # dlib
@@ -149,9 +147,6 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_compile_options("-Wno-deprecated-declarations")
 endif()
-
-# More verbose compilation and filesystem support
-add_compile_options("-Wall -Wextra -Wpedantic -Werror -lstdc++fs -std=c++17")
 
 # LandmarkDetector library
 add_subdirectory(lib/local/LandmarkDetector)
