@@ -42,6 +42,7 @@
 
 // System includes
 #include <fstream>
+#include <filesystem>
 
 // Math includes
 #define _USE_MATH_DEFINES

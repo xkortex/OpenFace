@@ -34,6 +34,8 @@
 
 #include "stdafx.h"
 
+#include <filesystem>
+
 #include <LandmarkDetectorModel.h>
 
 // Local includes

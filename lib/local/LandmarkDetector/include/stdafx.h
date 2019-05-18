@@ -27,14 +27,12 @@
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/opencv.h>
 
-// C++ stuff
+// C++ standard stuff
 #include <stdio.h>
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
-#include <filesystem>
 
 #include <vector>
 #include <map>

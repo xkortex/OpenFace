@@ -41,6 +41,8 @@
 #include <iostream>
 #include <cstdlib>
 
+#include <filesystem>
+
 #ifndef CONFIG_DIR
 #define CONFIG_DIR "~"
 #endif
