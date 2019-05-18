@@ -150,9 +150,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" ST
     add_compile_options("-Wno-deprecated-declarations")
 endif()
 
-# For filesystem support
-SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs")
-
 # LandmarkDetector library
 add_subdirectory(lib/local/LandmarkDetector)
 # Facial Expression analysis library

@@ -49,6 +49,7 @@ target_include_directories(LandmarkDetector PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 target_link_libraries(LandmarkDetector PUBLIC ${OpenCV_LIBS} ${OpenBLAS_LIB})
 target_link_libraries(LandmarkDetector PUBLIC dlib::dlib)
+target_link_libraries(LandmarkDetector stdc++fs)
 
 target_include_directories(LandmarkDetector PRIVATE ${OpenBLAS_INCLUDE_DIR})
 

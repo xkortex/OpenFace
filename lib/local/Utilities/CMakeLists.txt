@@ -32,6 +32,7 @@ target_include_directories(Utilities PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 target_link_libraries(Utilities PUBLIC ${OpenCV_LIBS})
 target_link_libraries(Utilities PUBLIC dlib::dlib)
+target_link_libraries(Utilities stdc++fs)
 
 install (TARGETS Utilities EXPORT OpenFaceTargets LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 install (FILES ${HEADERS} DESTINATION include/OpenFace)
