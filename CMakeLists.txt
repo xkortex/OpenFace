@@ -151,7 +151,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" ST
 endif()
 
 # For filesystem support
-add_compile_options("-lstdc++fs")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs")
 
 # LandmarkDetector library
 add_subdirectory(lib/local/LandmarkDetector)
