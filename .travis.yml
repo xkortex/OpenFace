@@ -80,7 +80,7 @@ script:
   - ./download_models.sh
   - mkdir build
   - cd build
-  - if cmake -D CMAKE_BUILD_TYPE=RELEASE .. 
+  - cmake -D CMAKE_BUILD_TYPE=RELEASE .. 
   - make
   - ../build/bin/FeatureExtraction -f "../samples/2015-10-15-15-14.avi" -q -mloc model/main_clm_general.txt
   - ../build/bin/FaceLandmarkImg -fdir ../samples -out_dir data -multi_view 1 -wild -q
