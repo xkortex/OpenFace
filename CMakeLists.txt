@@ -9,8 +9,6 @@ set(CMAKE_CONFIG_DIR etc/OpenFace)
 set(CONFIG_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_CONFIG_DIR}")
 add_definitions(-DCONFIG_DIR="${CONFIG_DIR}")
 
-target_compile_options(-Wall -Wextra -Wpedantic -Werror -lstdc++fs)
-
 # make sure we'll use OpenBLAS only: there's a header file naming difference between different
 # implementations; so OpenFace wants OpenBLAS;
 find_package(OpenBLAS REQUIRED)
@@ -151,6 +149,9 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_compile_options("-Wno-deprecated-declarations")
 endif()
+
+# More verbose compilation and filesystem support
+add_compile_options("-Wall -Wextra -Wpedantic -Werror -lstdc++fs -std=c++17")
 
 # LandmarkDetector library
 add_subdirectory(lib/local/LandmarkDetector)
