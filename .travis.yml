@@ -68,6 +68,7 @@ before_install:
 
   - if [ ${TRAVIS_OS_NAME} = osx ]; then  
       brew update;
+      brew install llvm;
       brew install tbb;
       brew install openblas;
       brew install dlib;
@@ -76,6 +77,8 @@ before_install:
   
 script:
   - $CXX --version
+  - ls
+  - cd OpenFace
   - chmod 777 ./download_models.sh
   - ./download_models.sh
   - mkdir build
