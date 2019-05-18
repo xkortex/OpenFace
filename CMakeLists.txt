@@ -124,9 +124,9 @@ endforeach()
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
     if (GCC_VERSION VERSION_LESS 8.0)
-		MESSAGE(FATAL_ERROR "Need a 8.0 or newer GCC compiler") 
+		MESSAGE(FATAL_ERROR "Need a 8.0 or newer GCC compiler ${GCC_VERSION}") 
     else ()
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lstdc++fs -msse -msse2 -msse3")
+        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -msse -msse2 -msse3")
     endif ()
 endif ()
 
@@ -147,6 +147,8 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_compile_options("-Wno-deprecated-declarations")
 endif()
+
+add_compile_options("-lstdc++fs")
 
 # LandmarkDetector library
 add_subdirectory(lib/local/LandmarkDetector)
