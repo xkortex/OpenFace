@@ -1,4 +1,6 @@
 cmake_minimum_required (VERSION 3.2)
+set(CMAKE_CXX_STANDARD 17)
+
 project(OpenFace VERSION 2.0.2)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
@@ -126,7 +128,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     if (GCC_VERSION VERSION_LESS 8.0)
 		MESSAGE(FATAL_ERROR "Need a 8.0 or newer GCC compiler ${GCC_VERSION}") 
     else ()
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -msse -msse2 -msse3")
+        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse -msse2 -msse3")
     endif ()
 endif ()
 
@@ -148,6 +150,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" ST
     add_compile_options("-Wno-deprecated-declarations")
 endif()
 
+# For filesystem support
 add_compile_options("-lstdc++fs")
 
 # LandmarkDetector library
