@@ -37,7 +37,7 @@ target_include_directories(FaceAnalyser PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 target_link_libraries(FaceAnalyser PUBLIC ${OpenCV_LIBS} ${OpenBLAS_LIB})
 target_link_libraries(FaceAnalyser PUBLIC dlib::dlib)
-target_link_libraries(FaceAnalyser stdc++fs)
+target_link_libraries(FaceAnalyser PUBLIC stdc++fs)
 
 target_include_directories(FaceAnalyser PRIVATE ${OpenBLAS_INCLUDE_DIR})
 
