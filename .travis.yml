@@ -26,6 +26,7 @@ before_install:
       sudo apt-get install git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev;
       sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev;
       sudo apt-get install cmake;
+      sudo apt-get install libopenblas-dev
       wget http://dlib.net/files/dlib-19.13.tar.bz2;
       tar xf dlib-19.13.tar.bz2;
       cd dlib-19.13;
@@ -79,7 +80,7 @@ script:
   - ./download_models.sh
   - mkdir build
   - cd build
-  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_CXX_COMPILER=g++-8 .. 
+  - if cmake -D CMAKE_BUILD_TYPE=RELEASE .. 
   - make
   - ../build/bin/FeatureExtraction -f "../samples/2015-10-15-15-14.avi" -q -mloc model/main_clm_general.txt
   - ../build/bin/FaceLandmarkImg -fdir ../samples -out_dir data -multi_view 1 -wild -q
