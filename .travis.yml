@@ -19,6 +19,7 @@ before_install:
 
   # G++ 8 compiler, OpenCV dependencies, dlib, openblas, and tbb
   - if [ ${TRAVIS_OS_NAME} = linux ]; then  
+      ls;
       sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test;
       sudo apt-get update -qq;
       sudo apt-get install -qq g++-8;
@@ -37,6 +38,7 @@ before_install:
       sudo make install;
       sudo ldconfig;
       cd ../..;
+      ls;
       wget https://github.com/opencv/opencv/archive/4.0.0.zip;
       unzip -qq 4.0.0.zip;
       cd opencv-4.0.0;
@@ -44,7 +46,7 @@ before_install:
       cd build;
     fi
 
-  # g++
+  # g++ TODO these should not be separated?
   - if [ "$CXX" = "g++" ]; then
       if [ ${TRAVIS_OS_NAME} = linux ]; then
         $CXX --version;
