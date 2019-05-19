@@ -197,7 +197,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FaceAnalyserParameters.cpp" />
-    <ClCompile Include="src\stdafx_fa.cpp" />
+    <ClCompile Include="src\stdafx_fa.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\SVM_dynamic_lin.cpp" />
     <ClCompile Include="src\SVM_static_lin.cpp" />
     <ClCompile Include="src\SVR_dynamic_lin_regressors.cpp" />

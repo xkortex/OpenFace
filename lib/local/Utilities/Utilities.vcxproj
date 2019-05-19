@@ -166,7 +166,10 @@
     <ClCompile Include="src\RecorderOpenFace.cpp" />
     <ClCompile Include="src\RecorderOpenFaceParameters.cpp" />
     <ClCompile Include="src\SequenceCapture.cpp" />
-    <ClCompile Include="src\stdafx_ut.cpp" />
+    <ClCompile Include="src\stdafx_ut.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\VisualizationUtils.cpp" />
     <ClCompile Include="src\Visualizer.cpp" />
   </ItemGroup>
