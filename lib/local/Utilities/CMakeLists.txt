@@ -5,6 +5,7 @@ SET(SOURCE
 	src/RecorderOpenFace.cpp
     src/RecorderOpenFaceParameters.cpp
 	src/SequenceCapture.cpp
+	src/stdafx_ut.cpp
 	src/VisualizationUtils.cpp
 	src/Visualizer.cpp
 )
@@ -16,6 +17,7 @@ SET(HEADERS
     include/RecorderOpenFace.h
 	include/RecorderOpenFaceParameters.h
 	include/SequenceCapture.h
+	include/stdafx_ut.h
 	include/VisualizationUtils.h
 	include/Visualizer.h	
 )

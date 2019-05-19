@@ -12,8 +12,8 @@
 
 // Precompiled headers stuff
 
-#ifndef __STDAFX_h_
-#define __STDAFX_h_
+#ifndef __STDAFX_FA_h_
+#define __STDAFX_FA_h_
 
 // OpenCV includes
 #include <opencv2/core/core.hpp>
