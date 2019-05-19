@@ -31,25 +31,9 @@
 //       IEEE International Conference on Automatic Face and Gesture Recognition, 2015 
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include <stdafx_fa.h>
 
 #include "FaceAnalyser.h"
-
-// OpenCV includes
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc.hpp>
-
-// System includes
-#include <stdio.h>
-#include <iostream>
-#include <iomanip>
-
-#include <string>
-#include <sstream>
-#include <algorithm>
-#include <iterator>
-#include <vector>
-
-#include <filesystem>
 
 // Local includes
 #include "Face_utils.h"
@@ -1034,7 +1018,7 @@ void FaceAnalyser::Read(std::string model_loc)
 	std::string line;
 
 	// The other module locations should be defined as relative paths from the main model
-	std::filesystem::path root = std::filesystem::path(model_loc).parent_path();
+	fs::path root = fs::path(model_loc).parent_path();
 
 	// The main file contains the references to other files
 	while (!locations.eof())
@@ -1119,7 +1103,7 @@ void FaceAnalyser::ReadAU(std::string au_model_location)
 	std::string line;
 	
 	// The other module locations should be defined as relative paths from the main model
-	std::filesystem::path root = std::filesystem::path(au_model_location).parent_path();		
+	fs::path root = fs::path(au_model_location).parent_path();		
 	
 	// The main file contains the references to other files
 	while (!locations.eof())

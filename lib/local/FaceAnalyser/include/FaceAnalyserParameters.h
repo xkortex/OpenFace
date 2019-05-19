@@ -36,6 +36,8 @@
 #ifndef FACE_ANALYSER_PARAM_H
 #define FACE_ANALYSER_PARAM_H
 
+#include <stdafx_fa.h>
+
 #include <vector>
 #include <opencv2/core/core.hpp>
 
@@ -89,7 +91,7 @@ private:
 	// Where to load the models from
 	std::string model_location;
 	// The location of the executable
-	std::filesystem::path root;
+	fs::path root;
 
 	std::vector<cv::Vec3d> orientation_bins;
 

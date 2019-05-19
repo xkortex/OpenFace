@@ -32,18 +32,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <stdafx_fa.h>
+
 #include <Face_utils.h>
 
 #include <RotationHelpers.h>
-
-// OpenCV includes
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/calib3d.hpp>
-
-// For FHOG visualisation
-#include <dlib/opencv.h>
-#include <dlib/image_processing/frontal_face_detector.h>
 
 namespace FaceAnalysis
 {

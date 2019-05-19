@@ -36,6 +36,9 @@
     <ClInclude Include="include\FaceAnalyserParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\stdafx_fa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Face_utils.cpp">
@@ -57,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\FaceAnalyserParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx_fa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
