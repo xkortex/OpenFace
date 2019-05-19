@@ -34,5 +34,10 @@ target_link_libraries(Utilities PUBLIC ${OpenCV_LIBS})
 target_link_libraries(Utilities PUBLIC dlib::dlib)
 target_link_libraries(Utilities PUBLIC stdc++fs)
 
+if(${Boost_FOUND})
+	target_include_directories(LandmarkDetector PUBLIC ${Boost_INCLUDE_DIRS})
+	target_link_libraries(LandmarkDetector PUBLIC ${Boost_LIBRARIES})
+endif()
+
 install (TARGETS Utilities EXPORT OpenFaceTargets LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 install (FILES ${HEADERS} DESTINATION include/OpenFace)

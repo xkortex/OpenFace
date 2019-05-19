@@ -39,6 +39,11 @@ target_link_libraries(FaceAnalyser PUBLIC ${OpenCV_LIBS} ${OpenBLAS_LIB})
 target_link_libraries(FaceAnalyser PUBLIC dlib::dlib)
 target_link_libraries(FaceAnalyser PUBLIC stdc++fs)
 
+if(${Boost_FOUND})
+	target_include_directories(FaceAnalyser PUBLIC ${Boost_INCLUDE_DIRS})
+	target_link_libraries(FaceAnalyser PUBLIC ${Boost_LIBRARIES})
+endif()
+
 target_include_directories(FaceAnalyser PRIVATE ${OpenBLAS_INCLUDE_DIR})
 
 install (TARGETS FaceAnalyser EXPORT OpenFaceTargets LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)

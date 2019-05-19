@@ -39,6 +39,18 @@ else()
     MESSAGE(FATAL_ERROR "OpenCV not found in the system.")
 endif()
 
+find_package( Boost 1.5.9 COMPONENTS filesystem system)
+if(${Boost_FOUND})
+	MESSAGE("Boost information:") 
+	MESSAGE("  Boost_VERSION: ${Boost_VERSION}")
+	MESSAGE("  Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}") 
+	MESSAGE("  Boost_LIBRARIES: ${Boost_LIBRARIES}") 
+	MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}") 
+else()
+    MESSAGE("Boost not found in the system.")
+endif()
+
+
 # Move LandmarkDetector model
 file(GLOB files "lib/local/LandmarkDetector/model/*.txt")
 foreach(file ${files})

@@ -30,16 +30,10 @@
 //       IEEE International Conference on Automatic Face and Gesture Recognition, 2015 
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx_ut.h"
 
 #include "VisualizationUtils.h"
 #include "RotationHelpers.h"
-
-// For FHOG visualisation
-#include <dlib/opencv.h>
-#include <dlib/image_processing/frontal_face_detector.h>
-
-// For drawing on images
-#include <opencv2/imgproc.hpp>
 
 namespace Utilities
 {

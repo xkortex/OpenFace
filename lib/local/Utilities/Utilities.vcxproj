@@ -117,8 +117,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
@@ -129,6 +128,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>stdafx_ut.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,8 +139,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
@@ -152,6 +151,7 @@
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>stdafx_ut.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -166,6 +166,7 @@
     <ClCompile Include="src\RecorderOpenFace.cpp" />
     <ClCompile Include="src\RecorderOpenFaceParameters.cpp" />
     <ClCompile Include="src\SequenceCapture.cpp" />
+    <ClCompile Include="src\stdafx_ut.cpp" />
     <ClCompile Include="src\VisualizationUtils.cpp" />
     <ClCompile Include="src\Visualizer.cpp" />
   </ItemGroup>
@@ -179,6 +180,7 @@
     <ClInclude Include="include\RecorderOpenFaceParameters.h" />
     <ClInclude Include="include\RotationHelpers.h" />
     <ClInclude Include="include\SequenceCapture.h" />
+    <ClInclude Include="include\stdafx_ut.h" />
     <ClInclude Include="include\VisualizationUtils.h" />
     <ClInclude Include="include\Visualizer.h" />
   </ItemGroup>

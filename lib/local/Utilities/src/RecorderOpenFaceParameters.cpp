@@ -30,6 +30,7 @@
 //       IEEE International Conference on Automatic Face and Gesture Recognition, 2015 
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx_ut.h"
 
 #include "RecorderOpenFaceParameters.h"
 

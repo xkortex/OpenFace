@@ -30,21 +30,9 @@
 //       IEEE International Conference on Automatic Face and Gesture Recognition, 2015 
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx_ut.h"
 
 #include "RecorderOpenFace.h"
-
-// For sorting
-#include <algorithm>
-
-// File manipulation
-#include <fstream>
-#include <sstream>
-#include <iostream>
-
-#include <filesystem>
-
-// For threading
-#include <chrono>
 
 using namespace Utilities;
 
@@ -60,9 +48,9 @@ void CreateDirectory(std::string output_path)
 	}
 
 	// Creating the right directory structure	
-	if (!std::filesystem::exists(output_path))
+	if (!fs::exists(output_path))
 	{
-		bool success = std::filesystem::create_directories(output_path);
+		bool success = fs::create_directories(output_path);
 
 		if (!success)
 		{
@@ -134,8 +122,8 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 	CreateDirectory(record_root);
 
 	// Create the filename for the general output file that contains all of the meta information about the recording
-	std::filesystem::path of_det_name(out_name);
-	of_det_name = std::filesystem::path(record_root) / std::filesystem::path(out_name + "_of_details.txt");
+	fs::path of_det_name(out_name);
+	of_det_name = fs::path(record_root) / fs::path(out_name + "_of_details.txt");
 
 	// Write in the of file what we are outputing what is the input etc.
 	metadata_file.open(of_det_name.string(), std::ios_base::out);
@@ -151,9 +139,9 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 		std::string input_filename_relative = in_filename;
 		std::string input_filename_full = in_filename;
 		
-		if (!std::filesystem::path(input_filename_full).is_absolute())
+		if (!fs::path(input_filename_full).is_absolute())
 		{
-			input_filename_full = std::filesystem::canonical(input_filename_relative).string();
+			input_filename_full = fs::canonical(input_filename_relative).string();
 		}
 		metadata_file << "Input:" << input_filename_relative << std::endl;
 		metadata_file << "Input full path:" << input_filename_full << std::endl;
@@ -175,7 +163,7 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 		// Output the data based on record_root, but do not include record_root in the meta file, as it is also in that directory
 		std::string hog_filename = out_name + ".hog";
 		metadata_file << "Output HOG:" << hog_filename << std::endl;
-		hog_filename = (std::filesystem::path(record_root) / hog_filename).string();
+		hog_filename = (fs::path(record_root) / hog_filename).string();
 		hog_recorder.Open(hog_filename);
 	}
 		
@@ -187,13 +175,13 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 			// Output the data based on record_root, but do not include record_root in the meta file, as it is also in that directory
 			this->media_filename = out_name + ".avi";
 			metadata_file << "Output video:" << this->media_filename << std::endl;
-			this->media_filename = (std::filesystem::path(record_root) / this->media_filename).string();
+			this->media_filename = (fs::path(record_root) / this->media_filename).string();
 		}
 		else
 		{
 			this->media_filename = out_name + "." + params.imageFormatVisualization();
 			metadata_file << "Output image:" << this->media_filename << std::endl;
-			this->media_filename = (std::filesystem::path(record_root) / this->media_filename).string();
+			this->media_filename = (fs::path(record_root) / this->media_filename).string();
 		}
 	}
 
@@ -202,7 +190,7 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 	{
 		aligned_output_directory = out_name + "_aligned";
 		metadata_file << "Output aligned directory:" << this->aligned_output_directory << std::endl;
-		this->aligned_output_directory = (std::filesystem::path(record_root) / this->aligned_output_directory).string();
+		this->aligned_output_directory = (fs::path(record_root) / this->aligned_output_directory).string();
 		CreateDirectory(aligned_output_directory);		
 	}
 
@@ -215,13 +203,13 @@ RecorderOpenFace::RecorderOpenFace(const std::string in_filename, const Recorder
 {
 
 	// From the filename, strip out the name without directory and extension
-	if (std::filesystem::is_directory(in_filename))
+	if (fs::is_directory(in_filename))
 	{
-		out_name = std::filesystem::canonical(in_filename).filename().string();
+		out_name = fs::canonical(in_filename).filename().string();
 	}
 	else
 	{
-		out_name = std::filesystem::path(in_filename).filename().replace_extension("").string();
+		out_name = fs::path(in_filename).filename().replace_extension("").string();
 	}
 
 	// Consuming the input arguments
@@ -246,8 +234,8 @@ RecorderOpenFace::RecorderOpenFace(const std::string in_filename, const Recorder
 	{
 		if (!output_found && arguments[i].compare("-of") == 0)
 		{
-			record_root = (std::filesystem::path(record_root) / std::filesystem::path(arguments[i + 1])).remove_filename().string();
-			out_name = std::filesystem::path(std::filesystem::path(arguments[i + 1])).replace_extension("").filename().string();
+			record_root = (fs::path(record_root) / fs::path(arguments[i + 1])).remove_filename().string();
+			out_name = fs::path(fs::path(arguments[i + 1])).replace_extension("").filename().string();
 			valid[i] = false;
 			valid[i + 1] = false;
 			i++;
@@ -274,13 +262,13 @@ RecorderOpenFace::RecorderOpenFace(const std::string in_filename, const Recorder
 RecorderOpenFace::RecorderOpenFace(const std::string in_filename, const RecorderOpenFaceParameters& parameters, std::string output_directory):video_writer(), params(parameters)
 {
 	// From the filename, strip out the name without directory and extension
-	if (std::filesystem::is_directory(in_filename))
+	if (fs::is_directory(in_filename))
 	{
-		out_name = std::filesystem::canonical(std::filesystem::path(in_filename)).filename().string();
+		out_name = fs::canonical(fs::path(in_filename)).filename().string();
 	}
 	else
 	{
-		out_name = std::filesystem::path(in_filename).filename().replace_extension("").string();
+		out_name = fs::path(in_filename).filename().replace_extension("").string();
 	}
 
 	record_root = output_directory;
@@ -342,7 +330,7 @@ void RecorderOpenFace::WriteObservation()
 		metadata_file << "Pose: " << params.outputPose() << std::endl;
 		metadata_file << "Shape parameters: " << params.outputPDMParams() << std::endl;
 
-		csv_filename = (std::filesystem::path(record_root) / csv_filename).string();
+		csv_filename = (fs::path(record_root) / csv_filename).string();
 		csv_recorder.Open(csv_filename, params.isSequence(), params.output2DLandmarks(), params.output3DLandmarks(), params.outputPDMParams(), params.outputPose(),
 			params.outputAUs(), params.outputGaze(), num_face_landmarks, num_model_modes, num_eye_landmarks, au_names_class, au_names_reg);
 	}
@@ -379,7 +367,7 @@ void RecorderOpenFace::WriteObservation()
 			std::sprintf(name, "face_det_%06d.", face_id);
 
 		// Construct the output filename
-		std::string out_file = (std::filesystem::path(aligned_output_directory) / std::filesystem::path(std::string(name) + params.imageFormatAligned())).string();
+		std::string out_file = (fs::path(aligned_output_directory) / fs::path(std::string(name) + params.imageFormatAligned())).string();
 
 		if(params.outputBadAligned() || landmark_detection_success)
 		{

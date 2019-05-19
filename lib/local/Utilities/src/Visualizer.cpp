@@ -30,19 +30,12 @@
 //       IEEE International Conference on Automatic Face and Gesture Recognition, 2015 
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx_ut.h"
 
 #include "Visualizer.h"
 #include "VisualizationUtils.h"
 #include "RotationHelpers.h"
 #include "ImageManipulationHelpers.h"
-
-#include <sstream>
-#include <iomanip>
-#include <map>
-#include <set>
-
-// For drawing on images
-#include <opencv2/imgproc.hpp>
 
 using namespace Utilities;
 

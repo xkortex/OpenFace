@@ -30,16 +30,9 @@
 //       IEEE International Conference on Automatic Face and Gesture Recognition, 2015 
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx_ut.h"
 
 #include "RecorderCSV.h"
-
-// For sorting
-#include <algorithm>
-
-// For standard out
-#include <iostream>
-#include <iomanip>
-#include <locale>
 
 using namespace Utilities;
 
