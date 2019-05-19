@@ -141,30 +141,30 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 	metadata_file.open(of_det_name.string(), std::ios_base::out);
 	if (!metadata_file.is_open())
 	{
-		cout << "ERROR: could not open the output file:" << of_det_name << ", either the path of the output directory is wrong or you do not have the permissions to write to it" << endl;
+		std::cout << "ERROR: could not open the output file:" << of_det_name << ", either the path of the output directory is wrong or you do not have the permissions to write to it" << std::endl;
 		exit(1);
 	}
 
 	// Populate relative and full path names in the meta file, unless it is a webcam
 	if (!params.isFromWebcam())
 	{
-		string input_filename_relative = in_filename;
-		string input_filename_full = in_filename;
+		std::string input_filename_relative = in_filename;
+		std::string input_filename_full = in_filename;
 		
 		if (!std::filesystem::path(input_filename_full).is_absolute())
 		{
 			input_filename_full = std::filesystem::canonical(input_filename_relative).string();
 		}
-		metadata_file << "Input:" << input_filename_relative << endl;
-		metadata_file << "Input full path:" << input_filename_full << endl;
+		metadata_file << "Input:" << input_filename_relative << std::endl;
+		metadata_file << "Input full path:" << input_filename_full << std::endl;
 	}
 	else
 	{
 		// Populate the metadata file
-		metadata_file << "Input:webcam" << endl;
+		metadata_file << "Input:webcam" << std::endl;
 	}
 
-	metadata_file << "Camera parameters:" << params.getFx() << "," << params.getFy() << "," << params.getCx() << "," << params.getCy() << endl;
+	metadata_file << "Camera parameters:" << params.getFx() << "," << params.getFy() << "," << params.getCx() << "," << params.getCy() << std::endl;
 
 	// Create the required individual recorders, CSV, HOG, aligned, video
 	csv_filename = out_name + ".csv";
@@ -174,7 +174,7 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 	{
 		// Output the data based on record_root, but do not include record_root in the meta file, as it is also in that directory
 		std::string hog_filename = out_name + ".hog";
-		metadata_file << "Output HOG:" << hog_filename << endl;
+		metadata_file << "Output HOG:" << hog_filename << std::endl;
 		hog_filename = (std::filesystem::path(record_root) / hog_filename).string();
 		hog_recorder.Open(hog_filename);
 	}
@@ -186,13 +186,13 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 		{
 			// Output the data based on record_root, but do not include record_root in the meta file, as it is also in that directory
 			this->media_filename = out_name + ".avi";
-			metadata_file << "Output video:" << this->media_filename << endl;
+			metadata_file << "Output video:" << this->media_filename << std::endl;
 			this->media_filename = (std::filesystem::path(record_root) / this->media_filename).string();
 		}
 		else
 		{
 			this->media_filename = out_name + "." + params.imageFormatVisualization();
-			metadata_file << "Output image:" << this->media_filename << endl;
+			metadata_file << "Output image:" << this->media_filename << std::endl;
 			this->media_filename = (std::filesystem::path(record_root) / this->media_filename).string();
 		}
 	}
@@ -201,7 +201,7 @@ void RecorderOpenFace::PrepareRecording(const std::string& in_filename)
 	if (params.outputAlignedFaces())
 	{
 		aligned_output_directory = out_name + "_aligned";
-		metadata_file << "Output aligned directory:" << this->aligned_output_directory << endl;
+		metadata_file << "Output aligned directory:" << this->aligned_output_directory << std::endl;
 		this->aligned_output_directory = (std::filesystem::path(record_root) / this->aligned_output_directory).string();
 		CreateDirectory(aligned_output_directory);		
 	}
@@ -334,13 +334,13 @@ void RecorderOpenFace::WriteObservation()
 
 		std::sort(au_names_reg.begin(), au_names_reg.end());
 
-		metadata_file << "Output csv:" << csv_filename << endl;
-		metadata_file << "Gaze: " << params.outputGaze() << endl;
-		metadata_file << "AUs: " << params.outputAUs() << endl;
-		metadata_file << "Landmarks 2D: " << params.output2DLandmarks() << endl;
-		metadata_file << "Landmarks 3D: " << params.output3DLandmarks() << endl;
-		metadata_file << "Pose: " << params.outputPose() << endl;
-		metadata_file << "Shape parameters: " << params.outputPDMParams() << endl;
+		metadata_file << "Output csv:" << csv_filename << std::endl;
+		metadata_file << "Gaze: " << params.outputGaze() << std::endl;
+		metadata_file << "AUs: " << params.outputAUs() << std::endl;
+		metadata_file << "Landmarks 2D: " << params.output2DLandmarks() << std::endl;
+		metadata_file << "Landmarks 3D: " << params.output3DLandmarks() << std::endl;
+		metadata_file << "Pose: " << params.outputPose() << std::endl;
+		metadata_file << "Shape parameters: " << params.outputPDMParams() << std::endl;
 
 		csv_filename = (std::filesystem::path(record_root) / csv_filename).string();
 		csv_recorder.Open(csv_filename, params.isSequence(), params.output2DLandmarks(), params.output3DLandmarks(), params.outputPDMParams(), params.outputPose(),
@@ -379,7 +379,7 @@ void RecorderOpenFace::WriteObservation()
 			std::sprintf(name, "face_det_%06d.", face_id);
 
 		// Construct the output filename
-		string out_file = (std::filesystem::path(aligned_output_directory) / std::filesystem::path(string(name) + params.imageFormatAligned())).string();
+		std::string out_file = (std::filesystem::path(aligned_output_directory) / std::filesystem::path(std::string(name) + params.imageFormatAligned())).string();
 
 		if(params.outputBadAligned() || landmark_detection_success)
 		{
@@ -515,8 +515,8 @@ RecorderOpenFace::~RecorderOpenFace()
 void RecorderOpenFace::Close()
 {
 	// Insert terminating frames to the queues
-	vis_to_out_queue.push(std::pair<string, cv::Mat>("", cv::Mat()));
-	aligned_face_queue.push(std::pair<string, cv::Mat>("", cv::Mat()));
+	vis_to_out_queue.push(std::pair<std::string, cv::Mat>("", cv::Mat()));
+	aligned_face_queue.push(std::pair<std::string, cv::Mat>("", cv::Mat()));
 
 	// Make sure the recording threads complete
 	if (video_writing_thread.joinable())

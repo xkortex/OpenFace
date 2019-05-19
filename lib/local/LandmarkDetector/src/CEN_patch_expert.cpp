@@ -63,7 +63,7 @@ CEN_patch_expert::CEN_patch_expert(const CEN_patch_expert& other) : confidence(o
 }
 
 //===========================================================================
-void CEN_patch_expert::Read(ifstream &stream)
+void CEN_patch_expert::Read(std::ifstream &stream)
 {
 
 	// Setting up OpenBLAS
@@ -400,7 +400,8 @@ void im2colBiasSparse(const cv::Mat_<float>& input, const unsigned int width, co
 }
 
 // As the sparse patch expert output with interpolation, this function creates an interpolation matrix
-void LandmarkDetector::interpolationMatrix(cv::Mat_<float>& mapMatrix, int response_height, int response_width, int input_width, int input_height)
+void LandmarkDetector::interpolationMatrix(cv::Mat_<float>& mapMatrix, int response_height, int response_width, 
+	int input_width, int input_height)
 {
 	int m = input_height;
 	int n = input_width;
@@ -444,7 +445,7 @@ void LandmarkDetector::interpolationMatrix(cv::Mat_<float>& mapMatrix, int respo
 			}
 
 			float num_neigh = 0.0;
-			vector<int> val_ids;
+			std::vector<int> val_ids;
 			if (x - 1 >= 0)
 			{
 				num_neigh++;

@@ -119,7 +119,7 @@ void CCNF_patch_expert::ComputeSigmas(std::vector<cv::Mat_<float> > sigma_compon
 }
 
 //===========================================================================
-void CCNF_neuron::Read(ifstream &stream)
+void CCNF_neuron::Read(std::ifstream &stream)
 {
 	// Sanity check
 	int read_type;
@@ -285,7 +285,7 @@ void CCNF_neuron::Response(const cv::Mat_<float> &im, cv::Mat_<double> &im_dft, 
 }
 
 //===========================================================================
-void CCNF_patch_expert::Read(ifstream &stream, std::vector<int> window_sizes, std::vector<std::vector<cv::Mat_<float> > > sigma_components)
+void CCNF_patch_expert::Read(std::ifstream &stream, std::vector<int> window_sizes, std::vector<std::vector<cv::Mat_<float> > > sigma_components)
 {
 
 	// Sanity check

@@ -33,8 +33,6 @@
 
 #include "RecorderOpenFaceParameters.h"
 
-using namespace std;
-
 using namespace Utilities;
 
 RecorderOpenFaceParameters::RecorderOpenFaceParameters(std::vector<std::string> &arguments, bool sequence, bool from_webcam, float fx, float fy, float cx, float cy, double fps_vid_out)

@@ -136,16 +136,16 @@ namespace GazeAnalyser_Interop {
 		System::Collections::Generic::List<System::Tuple<System::Windows::Point, System::Windows::Point>^>^ CalculateGazeLines(float fx, float fy, float cx, float cy)
 		{
 
-			vector<cv::Point3f> points_left;
+			std::vector<cv::Point3f> points_left;
 			points_left.push_back(cv::Point3f(*pupil_left));
 			points_left.push_back(cv::Point3f(*pupil_left + *gazeDirection0 * 40.0));
 
-			vector<cv::Point3f> points_right;
+			std::vector<cv::Point3f> points_right;
 			points_right.push_back(cv::Point3f(*pupil_right));
 			points_right.push_back(cv::Point3f(*pupil_right + *gazeDirection1 * 40.0));
 
 			// Perform manual projection of points
-			vector<cv::Point2f> imagePoints_left;
+			std::vector<cv::Point2f> imagePoints_left;
 			for (size_t i = 0; i < points_left.size(); ++i)
 			{
 				float x = points_left[i].x * fx / points_left[i].z + cx;
@@ -154,7 +154,7 @@ namespace GazeAnalyser_Interop {
 
 			}
 
-			vector<cv::Point2f> imagePoints_right;
+			std::vector<cv::Point2f> imagePoints_right;
 			for (size_t i = 0; i < points_right.size(); ++i)
 			{
 				float x = points_right[i].x * fx / points_right[i].z + cx;

@@ -76,7 +76,7 @@ public:
 
 	FaceAnalyserManaged(System::String^ root, bool dynamic, int output_width, bool mask_aligned) 
 	{
-		string root_std = msclr::interop::marshal_as<std::string>(root);
+		std::string root_std = msclr::interop::marshal_as<std::string>(root);
 		FaceAnalysis::FaceAnalyserParameters params(root_std);
 		
 		if (!dynamic)

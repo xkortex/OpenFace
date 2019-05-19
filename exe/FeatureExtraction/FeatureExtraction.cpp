@@ -68,17 +68,15 @@ static void printErrorAndAbort(const std::string & error)
 #define FATAL_STREAM( stream ) \
 printErrorAndAbort( std::string( "Fatal error: " ) + stream )
 
-using namespace std;
-
-vector<string> get_arguments(int argc, char **argv)
+std::vector<std::string> get_arguments(int argc, char **argv)
 {
 
-	vector<string> arguments;
+	std::vector<std::string> arguments;
 
 	// First argument is reserved for the name of the executable
 	for (int i = 0; i < argc; ++i)
 	{
-		arguments.push_back(string(argv[i]));
+		arguments.push_back(std::string(argv[i]));
 	}
 	return arguments;
 }
@@ -86,13 +84,13 @@ vector<string> get_arguments(int argc, char **argv)
 int main(int argc, char **argv)
 {
 
-	vector<string> arguments = get_arguments(argc, argv);
+	std::vector<std::string> arguments = get_arguments(argc, argv);
 
 	// no arguments: output usage
 	if (arguments.size() == 1)
 	{
-		cout << "For command line arguments see:" << endl;
-		cout << " https://github.com/TadasBaltrusaitis/OpenFace/wiki/Command-line-arguments";
+		std::cout << "For command line arguments see:" << std::endl;
+		std::cout << " https://github.com/TadasBaltrusaitis/OpenFace/wiki/Command-line-arguments";
 		return 0;
 	}
 
@@ -104,7 +102,7 @@ int main(int argc, char **argv)
 
 	if (!face_model.loaded_successfully)
 	{
-		cout << "ERROR: Could not load the landmark detector" << endl;
+		std::cout << "ERROR: Could not load the landmark detector" << std::endl;
 		return 1;
 	}
 
@@ -114,12 +112,12 @@ int main(int argc, char **argv)
 
 	if (!face_model.eye_model)
 	{
-		cout << "WARNING: no eye model found" << endl;
+		std::cout << "WARNING: no eye model found" << std::endl;
 	}
 
 	if (face_analyser.GetAUClassNames().size() == 0 && face_analyser.GetAUClassNames().size() == 0)
 	{
-		cout << "WARNING: no Action Unit models found" << endl;
+		std::cout << "WARNING: no Action Unit models found" << std::endl;
 	}
 
 	Utilities::SequenceCapture sequence_reader;
@@ -158,7 +156,7 @@ int main(int argc, char **argv)
 		Utilities::RecorderOpenFace open_face_rec(sequence_reader.name, recording_params, arguments);
 
 		if (recording_params.outputGaze() && !face_model.eye_model)
-			cout << "WARNING: no eye model defined, but outputting gaze" << endl;
+			std::cout << "WARNING: no eye model defined, but outputting gaze" << std::endl;
 
 		captured_image = sequence_reader.GetNextFrame();
 
@@ -240,10 +238,10 @@ int main(int argc, char **argv)
 			// Reporting progress
 			if (sequence_reader.GetProgress() >= reported_completion / 10.0)
 			{
-				cout << reported_completion * 10 << "% ";
+				std::cout << reported_completion * 10 << "% ";
 				if (reported_completion == 10)
 				{
-					cout << endl;
+					std::cout << std::endl;
 				}
 				reported_completion = reported_completion + 1;
 			}

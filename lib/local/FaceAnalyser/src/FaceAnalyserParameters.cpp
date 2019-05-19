@@ -53,13 +53,13 @@ FaceAnalyserParameters::FaceAnalyserParameters():root()
 	init();
 }
 
-FaceAnalyserParameters::FaceAnalyserParameters(string root_dir)
+FaceAnalyserParameters::FaceAnalyserParameters(std::string root_dir)
 {
 	this->root = root_dir;
 	init();
 	
 }
-FaceAnalyserParameters::FaceAnalyserParameters(vector<string> &arguments):root()
+FaceAnalyserParameters::FaceAnalyserParameters(std::vector<std::string> &arguments):root()
 {
 
 	// First element is reserved for the executable location (useful for finding relative model locs)
@@ -185,7 +185,7 @@ void FaceAnalyserParameters::init()
 		std::cout << "Could not find the face analysis module to load" << std::endl;
 	}
 
-	orientation_bins = vector<cv::Vec3d>();
+	orientation_bins = std::vector<cv::Vec3d>();
 
 }
 

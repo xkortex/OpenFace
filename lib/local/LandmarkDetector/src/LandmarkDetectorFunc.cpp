@@ -287,7 +287,7 @@ bool LandmarkDetector::DetectLandmarksInVideo(const cv::Mat &rgb_image, CLNF& cl
 			// If the model is still empty default to HOG
 			if (clnf_model.face_detector_MTCNN.empty())
 			{
-				cout << "INFO: defaulting to HOG-SVM face detector" << endl;
+				std::cout << "INFO: defaulting to HOG-SVM face detector" << std::endl;
 				params.curr_face_detector = LandmarkDetector::FaceModelParameters::HOG_SVM_DETECTOR;
 			}
 
@@ -414,7 +414,8 @@ bool LandmarkDetector::DetectLandmarksInVideo(const cv::Mat &rgb_image, const cv
 // Optionally can provide a bounding box in which detection is performed (this is useful if multiple faces are to be detected in images)
 //================================================================================================================
 
-bool DetectLandmarksInImageMultiHypBasic(const cv::Mat_<uchar> &grayscale_image, vector<cv::Vec3d> rotation_hypotheses, const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params)
+bool DetectLandmarksInImageMultiHypBasic(const cv::Mat_<uchar> &grayscale_image, std::vector<cv::Vec3d> rotation_hypotheses, 
+	const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params)
 {
 
 	// Use the initialisation size for the landmark detection
@@ -430,11 +431,11 @@ bool DetectLandmarksInImageMultiHypBasic(const cv::Mat_<uchar> &grayscale_image,
 	bool best_success;
 
 	// The hierarchical model parameters
-	vector<float> best_likelihood_h(clnf_model.hierarchical_models.size());
-	vector<cv::Vec6f> best_global_parameters_h(clnf_model.hierarchical_models.size());
-	vector<cv::Mat_<float>> best_local_parameters_h(clnf_model.hierarchical_models.size());
-	vector<cv::Mat_<float>> best_detected_landmarks_h(clnf_model.hierarchical_models.size());
-	vector<cv::Mat_<float>> best_landmark_likelihoods_h(clnf_model.hierarchical_models.size());
+	std::vector<float> best_likelihood_h(clnf_model.hierarchical_models.size());
+	std::vector<cv::Vec6f> best_global_parameters_h(clnf_model.hierarchical_models.size());
+	std::vector<cv::Mat_<float>> best_local_parameters_h(clnf_model.hierarchical_models.size());
+	std::vector<cv::Mat_<float>> best_detected_landmarks_h(clnf_model.hierarchical_models.size());
+	std::vector<cv::Mat_<float>> best_landmark_likelihoods_h(clnf_model.hierarchical_models.size());
 
 	for (size_t hypothesis = 0; hypothesis < rotation_hypotheses.size(); ++hypothesis)
 	{
@@ -496,20 +497,21 @@ bool DetectLandmarksInImageMultiHypBasic(const cv::Mat_<uchar> &grayscale_image,
 }
 
 // Helper index sorting function
-template <typename T> std::vector<size_t> sort_indexes(const vector<T> &v) {
+template <typename T> std::vector<size_t> sort_indexes(const std::vector<T> &v) {
 
 	// initialize original index locations
-	vector<size_t> idx(v.size());
+	std::vector<size_t> idx(v.size());
 	std::iota(idx.begin(), idx.end(), 0);
 
 	// sort indexes based on comparing values in v
-	sort(idx.begin(), idx.end(),
+	std::sort(idx.begin(), idx.end(),
 		[&v](size_t i1, size_t i2) {return v[i1] > v[i2]; });
 
 	return idx;
 }
 
-bool DetectLandmarksInImageMultiHypEarlyTerm(const cv::Mat_<uchar> &grayscale_image, vector<cv::Vec3d> rotation_hypotheses, const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params)
+bool DetectLandmarksInImageMultiHypEarlyTerm(const cv::Mat_<uchar> &grayscale_image, std::vector<cv::Vec3d> rotation_hypotheses, 
+	const cv::Rect_<double> bounding_box, CLNF& clnf_model, FaceModelParameters& params)
 {
 	FaceModelParameters old_params(params);
 	
@@ -530,9 +532,9 @@ bool DetectLandmarksInImageMultiHypEarlyTerm(const cv::Mat_<uchar> &grayscale_im
 	bool success = false;
 
 	// Keeping track of converges
-	vector<float> likelihoods;
-	vector<cv::Vec6f> global_parameters;
-	vector<cv::Mat_<float>> local_parameters;
+	std::vector<float> likelihoods;
+	std::vector<cv::Vec6f> global_parameters;
+	std::vector<cv::Mat_<float>> local_parameters;
 
 	for (size_t hypothesis = 0; hypothesis < rotation_hypotheses.size(); ++hypothesis)
 	{
@@ -584,14 +586,14 @@ bool DetectLandmarksInImageMultiHypEarlyTerm(const cv::Mat_<uchar> &grayscale_im
 		bool best_success;
 
 		// The hierarchical model parameters
-		vector<float> best_likelihood_h(clnf_model.hierarchical_models.size());
-		vector<cv::Vec6f> best_global_parameters_h(clnf_model.hierarchical_models.size());
-		vector<cv::Mat_<float>> best_local_parameters_h(clnf_model.hierarchical_models.size());
-		vector<cv::Mat_<float>> best_detected_landmarks_h(clnf_model.hierarchical_models.size());
-		vector<cv::Mat_<float>> best_landmark_likelihoods_h(clnf_model.hierarchical_models.size());
+		std::vector<float> best_likelihood_h(clnf_model.hierarchical_models.size());
+		std::vector<cv::Vec6f> best_global_parameters_h(clnf_model.hierarchical_models.size());
+		std::vector<cv::Mat_<float>> best_local_parameters_h(clnf_model.hierarchical_models.size());
+		std::vector<cv::Mat_<float>> best_detected_landmarks_h(clnf_model.hierarchical_models.size());
+		std::vector<cv::Mat_<float>> best_landmark_likelihoods_h(clnf_model.hierarchical_models.size());
 
 		// Sort the likelihoods and pick the best top 3 models
-		vector<size_t> indices = sort_indexes(likelihoods);
+		std::vector<size_t> indices = sort_indexes(likelihoods);
 
 		// Pick 3 best hypotheses and complete them
 		size_t max = indices.size() >= 3 ? 3 : indices.size();
@@ -671,7 +673,7 @@ bool LandmarkDetector::DetectLandmarksInImage(const cv::Mat &rgb_image, const cv
 	}
 
 	// Can have multiple hypotheses
-	vector<cv::Vec3d> rotation_hypotheses;
+	std::vector<cv::Vec3d> rotation_hypotheses;
 
 	if(params.multi_view)
 	{
@@ -733,7 +735,7 @@ bool LandmarkDetector::DetectLandmarksInImage(const cv::Mat &rgb_image, CLNF& cl
 		// If the model is still empty default to HOG
 		if (clnf_model.face_detector_MTCNN.empty())
 		{
-			cout << "INFO: defaulting to HOG-SVM face detector" << endl;
+			std::cout << "INFO: defaulting to HOG-SVM face detector" << std::endl;
 			params.curr_face_detector = LandmarkDetector::FaceModelParameters::HOG_SVM_DETECTOR;
 		}
 

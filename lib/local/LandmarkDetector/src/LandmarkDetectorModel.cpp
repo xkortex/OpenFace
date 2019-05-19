@@ -34,8 +34,6 @@
 
 #include "stdafx.h"
 
-#include <filesystem>
-
 #include <LandmarkDetectorModel.h>
 
 // Local includes
@@ -60,7 +58,7 @@ CLNF::CLNF()
 }
 
 // Constructor from a model file
-CLNF::CLNF(string fname)
+CLNF::CLNF(std::string fname)
 {
 	// A successful read wil set this to true
 	loaded_successfully = false;
@@ -245,27 +243,27 @@ CLNF & CLNF::operator= (const CLNF&& other)
 }
 
 
-bool CLNF::Read_CLNF(string clnf_location)
+bool CLNF::Read_CLNF(std::string clnf_location)
 {
 	// Location of modules
-	ifstream locations(clnf_location.c_str(), ios_base::in);
+	std::ifstream locations(clnf_location.c_str(), std::ios_base::in);
 
 	if(!locations.is_open())
 	{
-		cout << "Couldn't open the CLNF model file aborting" << endl;
-		cout.flush();
+		std::cout << "Couldn't open the CLNF model file aborting" << std::endl;
+		std::cout.flush();
 		return false;
 	}
 
-	string line;
+	std::string line;
 	
-	vector<string> intensity_expert_locations;
-	vector<string> ccnf_expert_locations;
-	vector<string> cen_expert_locations;
-	string early_term_loc;
+	std::vector<std::string> intensity_expert_locations;
+	std::vector<std::string> ccnf_expert_locations;
+	std::vector<std::string> cen_expert_locations;
+	std::string early_term_loc;
 
 	// The other module locations should be defined as relative paths from the main model
-	std::filesystem::path root = std::filesystem::path(clnf_location).parent_path();
+	fs::path root = fs::path(clnf_location).parent_path();
 
 	// The main file contains the references to other files
 	while (!locations.eof())
@@ -273,10 +271,10 @@ bool CLNF::Read_CLNF(string clnf_location)
 		
 		getline(locations, line);
 
-		stringstream lineStream(line);
+		std::stringstream lineStream(line);
 
-		string module;
-		string location;
+		std::string module;
+		std::string location;
 
 		// figure out which module is to be read from which file
 		lineStream >> module;
@@ -297,7 +295,7 @@ bool CLNF::Read_CLNF(string clnf_location)
 				
 		if (module.compare("PDM") == 0) 
 		{            
-			cout << "Reading the PDM module from: " << location << "....";
+			std::cout << "Reading the PDM module from: " << location << "....";
 			bool read_success = pdm.Read(location);
 
 			if (!read_success)
@@ -305,12 +303,12 @@ bool CLNF::Read_CLNF(string clnf_location)
 				return false;
 			}
 
-			cout << "Done" << endl;
+			std::cout << "Done" << std::endl;
 		}
 		else if (module.compare("Triangulations") == 0) 
 		{       
-			cout << "Reading the Triangulations module from: " << location << "....";
-			ifstream triangulationFile(location.c_str(), ios_base::in);
+			std::cout << "Reading the Triangulations module from: " << location << "....";
+			std::ifstream triangulationFile(location.c_str(), std::ios_base::in);
 
 			if(!triangulationFile.is_open())
 			{
@@ -330,7 +328,7 @@ bool CLNF::Read_CLNF(string clnf_location)
 				LandmarkDetector::SkipComments(triangulationFile);
 				LandmarkDetector::ReadMat(triangulationFile, triangulations[i]);
 			}
-			cout << "Done" << endl;
+			std::cout << "Done" << std::endl;
 		}
 		else if(module.compare("PatchesIntensity") == 0)
 		{
@@ -362,22 +360,22 @@ bool CLNF::Read_CLNF(string clnf_location)
 	
 }
 
-void CLNF::Read(string main_location)
+void CLNF::Read(std::string main_location)
 {
 
-	cout << "Reading the landmark detector/tracker from: " << main_location << endl;
+	std::cout << "Reading the landmark detector/tracker from: " << main_location << std::endl;
 	
-	ifstream locations(main_location.c_str(), ios_base::in);
+	std::ifstream locations(main_location.c_str(), std::ios_base::in);
 	if(!locations.is_open())
 	{
-		cout << "Couldn't open the model file, aborting" << endl;
+		std::cout << "Couldn't open the model file, aborting" << std::endl;
 		loaded_successfully = false;
 		return;
 	}
-	string line;
+	std::string line;
 	
 	// The other module locations should be defined as relative paths from the main model
-	std::filesystem::path root = std::filesystem::path(main_location).parent_path();	
+	fs::path root = fs::path(main_location).parent_path();	
 
 	// Assume no eye model, unless read-in
 	eye_model = false;
@@ -387,10 +385,10 @@ void CLNF::Read(string main_location)
 	{ 
 		getline(locations, line);
 
-		stringstream lineStream(line);
+		std::stringstream lineStream(line);
 
-		string module;
-		string location;
+		std::string module;
+		std::string location;
 
 		// figure out which module is to be read from which file
 		lineStream >> module;
@@ -408,7 +406,7 @@ void CLNF::Read(string main_location)
 		location = (root / location).string();
 		if (module.compare("LandmarkDetector") == 0) 
 		{ 
-			cout << "Reading the landmark detector module from: " << location << endl;
+			std::cout << "Reading the landmark detector module from: " << location << std::endl;
 
 			// The CLNF module includes the PDM and the patch experts
 			bool read_success = Read_CLNF(location);
@@ -421,11 +419,11 @@ void CLNF::Read(string main_location)
 		}
 		else if(module.compare("LandmarkDetector_part") == 0)
 		{
-			string part_name;
+			std::string part_name;
 			lineStream >> part_name;
-			cout << "Reading part based module...." << part_name << endl;
+			std::cout << "Reading part based module...." << part_name << std::endl;
 
-			vector<pair<int, int>> mappings;
+			std::vector<std::pair<int, int>> mappings;
 			while(!lineStream.eof())
 			{
 				int ind_in_main;
@@ -433,7 +431,7 @@ void CLNF::Read(string main_location)
 				
 				int ind_in_part;
 				lineStream >> ind_in_part;
-				mappings.push_back(pair<int, int>(ind_in_main, ind_in_part));
+				mappings.push_back(std::pair<int, int>(ind_in_main, ind_in_part));
 			}
 		
 			this->hierarchical_mapping.push_back(mappings);
@@ -451,8 +449,8 @@ void CLNF::Read(string main_location)
 			this->hierarchical_model_names.push_back(part_name);
 
 			// Making sure we look based on model directory
-			std::string root_loc = std::filesystem::path(main_location).parent_path().string();
-			std::vector<string> sub_arguments{ root_loc };
+			std::string root_loc = fs::path(main_location).parent_path().string();
+			std::vector<std::string> sub_arguments{ root_loc };
 			
 			FaceModelParameters params(sub_arguments);
 			
@@ -463,11 +461,11 @@ void CLNF::Read(string main_location)
 			if(part_name.compare("left_eye") == 0 || part_name.compare("right_eye") == 0)
 			{
 				
-				vector<int> windows_large;
+				std::vector<int> windows_large;
 				windows_large.push_back(5);
 				windows_large.push_back(3);
 
-				vector<int> windows_small;
+				std::vector<int> windows_small;
 				windows_small.push_back(5);
 				windows_small.push_back(3);
 
@@ -480,12 +478,12 @@ void CLNF::Read(string main_location)
 			}
 			else if(part_name.compare("left_eye_28") == 0 || part_name.compare("right_eye_28") == 0)
 			{
-				vector<int> windows_large;
+				std::vector<int> windows_large;
 				windows_large.push_back(3);
 				windows_large.push_back(5);
 				windows_large.push_back(9);
 
-				vector<int> windows_small;
+				std::vector<int> windows_small;
 				windows_small.push_back(3);
 				windows_small.push_back(5);
 				windows_small.push_back(9);
@@ -502,11 +500,11 @@ void CLNF::Read(string main_location)
 			}
 			else if(part_name.compare("mouth") == 0)
 			{
-				vector<int> windows_large;
+				std::vector<int> windows_large;
 				windows_large.push_back(7);
 				windows_large.push_back(7);
 
-				vector<int> windows_small;
+				std::vector<int> windows_small;
 				windows_small.push_back(7);
 				windows_small.push_back(7);
 
@@ -519,11 +517,11 @@ void CLNF::Read(string main_location)
 			}
 			else if(part_name.compare("brow") == 0)
 			{
-				vector<int> windows_large;
+				std::vector<int> windows_large;
 				windows_large.push_back(11);
 				windows_large.push_back(9);
 
-				vector<int> windows_small;
+				std::vector<int> windows_small;
 				windows_small.push_back(11);
 				windows_small.push_back(9);
 
@@ -536,10 +534,10 @@ void CLNF::Read(string main_location)
 			}
 			else if(part_name.compare("inner") == 0)
 			{
-				vector<int> windows_large;
+				std::vector<int> windows_large;
 				windows_large.push_back(9);
 
-				vector<int> windows_small;
+				std::vector<int> windows_small;
 				windows_small.push_back(9);
 
 				params.window_sizes_init = windows_large;
@@ -553,13 +551,13 @@ void CLNF::Read(string main_location)
 
 			this->hierarchical_params.push_back(params);
 
-			cout << "Done" << endl;
+			std::cout << "Done" << std::endl;
 		}
 		else if (module.compare("DetectionValidator") == 0)
 		{            
-			cout << "Reading the landmark validation module....";
+			std::cout << "Reading the landmark validation module....";
 			landmark_validator.Read(location);
-			cout << "Done" << endl;
+			std::cout << "Done" << std::endl;
 		}
 	}
  
@@ -647,7 +645,7 @@ bool CLNF::DetectLandmarks(const cv::Mat_<uchar> &image, FaceModelParameters& pa
 				
 				int n_part_points = hierarchical_models[part_model].pdm.NumberOfPoints();
 
-				vector<pair<int, int>> mappings = this->hierarchical_mapping[part_model];
+				std::vector<std::pair<int, int>> mappings = this->hierarchical_mapping[part_model];
 
 				cv::Mat_<float> part_model_locs(n_part_points * 2, 1, 0.0f);
 
@@ -686,7 +684,7 @@ bool CLNF::DetectLandmarks(const cv::Mat_<uchar> &image, FaceModelParameters& pa
 
 			for (size_t part_model = 0; part_model < hierarchical_models.size(); ++part_model)
 			{
-				vector<pair<int, int>> mappings = this->hierarchical_mapping[part_model];
+				std::vector<std::pair<int, int>> mappings = this->hierarchical_mapping[part_model];
 
 				// Reincorporate the models into main tracker
 				for (size_t mapping_ind = 0; mapping_ind < mappings.size(); ++mapping_ind)
@@ -744,7 +742,7 @@ bool CLNF::Fit(const cv::Mat_<float>& im, const std::vector<int>& window_sizes, 
 	int num_scales = patch_experts.patch_scaling.size();
 
 	// Storing the patch expert response maps
-	vector<cv::Mat_<float> > patch_expert_responses(n);
+	std::vector<cv::Mat_<float> > patch_expert_responses(n);
 
 	// Converting from image space to patch expert space (normalised for rotation and scale)
 	cv::Matx22f sim_ref_to_img;
@@ -806,7 +804,7 @@ bool CLNF::Fit(const cv::Mat_<float>& im, const std::vector<int>& window_sizes, 
 		// Can't track very small images reliably (less than ~30px across)
 		if (params_global[0] < 0.25)
 		{
-			cout << "Face too small for landmark detection" << endl;
+			std::cout << "Face too small for landmark detection" << std::endl;
 			return false;
 		}
 
@@ -819,7 +817,9 @@ bool CLNF::Fit(const cv::Mat_<float>& im, const std::vector<int>& window_sizes, 
 	return true;
 }
 
-void CLNF::NonVectorisedMeanShift_precalc_kde(cv::Mat_<float>& out_mean_shifts, const vector<cv::Mat_<float> >& patch_expert_responses, const cv::Mat_<float> &dxs, const cv::Mat_<float> &dys, int resp_size, float a, int scale, int view_id, map<int, cv::Mat_<float> >& kde_resp_precalc)
+void CLNF::NonVectorisedMeanShift_precalc_kde(cv::Mat_<float>& out_mean_shifts, const std::vector<cv::Mat_<float> >& patch_expert_responses,
+	const cv::Mat_<float> &dxs, const cv::Mat_<float> &dys, int resp_size, float a, int scale, int view_id, 
+	std::map<int, cv::Mat_<float> >& kde_resp_precalc)
 {
 	
 	int n = dxs.rows;
@@ -987,7 +987,7 @@ void CLNF::GetWeightMatrix(cv::Mat_<float>& WeightMatrix, int scale, int view_id
 }
 
 //=============================================================================
-float CLNF::NU_RLMS(cv::Vec6f& final_global, cv::Mat_<float>& final_local, const vector<cv::Mat_<float> >& patch_expert_responses, const cv::Vec6f& initial_global, const cv::Mat_<float>& initial_local,
+float CLNF::NU_RLMS(cv::Vec6f& final_global, cv::Mat_<float>& final_local, const std::vector<cv::Mat_<float> >& patch_expert_responses, const cv::Vec6f& initial_global, const cv::Mat_<float>& initial_local,
 		          const cv::Mat_<float>& base_shape, const cv::Matx22f& sim_img_to_ref, const cv::Matx22f& sim_ref_to_img, int resp_size, int view_id, bool rigid, int scale, cv::Mat_<float>& landmark_lhoods,
 				  const FaceModelParameters& parameters, bool compute_lhood)
 {		

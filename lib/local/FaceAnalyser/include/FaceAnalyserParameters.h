@@ -41,8 +41,6 @@
 
 #include <filesystem>
 
-using namespace std;
-
 namespace FaceAnalysis
 {
 
@@ -51,8 +49,8 @@ struct FaceAnalyserParameters
 public:
 	// Constructors
 	FaceAnalyserParameters();
-	FaceAnalyserParameters(string root_exe);
-	FaceAnalyserParameters(vector<string> &arguments);
+	FaceAnalyserParameters(std::string root_exe);
+	FaceAnalyserParameters(std::vector<std::string> &arguments);
 
 	// These are the parameters of training and will not change and are fixed
 	const double sim_scale_au = 0.7;
@@ -71,8 +69,8 @@ public:
 	double getSimScaleOut() const { return sim_scale_out; }
 	int getSimSizeOut() const { return sim_size_out; }
 	bool getDynamic() const { return dynamic; }
-	string getModelLoc() const { return string(model_location); }
-	vector<cv::Vec3d> getOrientationBins() const { return vector<cv::Vec3d>(orientation_bins); }
+	std::string getModelLoc() const { return std::string(model_location); }
+	std::vector<cv::Vec3d> getOrientationBins() const { return std::vector<cv::Vec3d>(orientation_bins); }
 
 private:
 
@@ -89,11 +87,11 @@ private:
 	bool dynamic;
 
 	// Where to load the models from
-	string model_location;
+	std::string model_location;
 	// The location of the executable
 	std::filesystem::path root;
 
-	vector<cv::Vec3d> orientation_bins;
+	std::vector<cv::Vec3d> orientation_bins;
 
 };
 

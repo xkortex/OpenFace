@@ -42,8 +42,6 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 
-using namespace std;
-
 namespace LandmarkDetector
 {
 
@@ -51,7 +49,8 @@ namespace LandmarkDetector
 	// Fast patch expert response computation (linear model across a ROI) using normalised cross-correlation
 	//===========================================================================
 
-	void crossCorr_m(const cv::Mat_<float>& img, cv::Mat_<double>& img_dft, const cv::Mat_<float>& _templ, map<int, cv::Mat_<double> >& _templ_dfts, cv::Mat_<float>& corr)
+	void crossCorr_m(const cv::Mat_<float>& img, cv::Mat_<double>& img_dft, const cv::Mat_<float>& _templ, 
+		std::map<int, cv::Mat_<double> >& _templ_dfts, cv::Mat_<float>& corr)
 	{
 		// Our model will always be under min block size so can ignore this
 		//const double blockScale = 4.5;
@@ -147,7 +146,9 @@ namespace LandmarkDetector
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	void matchTemplate_m(const cv::Mat_<float>& input_img, cv::Mat_<double>& img_dft, cv::Mat& _integral_img, cv::Mat& _integral_img_sq, const cv::Mat_<float>&  templ, map<int, cv::Mat_<double> >& templ_dfts, cv::Mat_<float>& result, int method)
+	void matchTemplate_m(const cv::Mat_<float>& input_img, cv::Mat_<double>& img_dft, cv::Mat& _integral_img, 
+		cv::Mat& _integral_img_sq, const cv::Mat_<float>&  templ, std::map<int, cv::Mat_<double> >& templ_dfts, 
+		cv::Mat_<float>& result, int method)
 	{
 
 		int numType = method == cv::TM_CCORR || method == cv::TM_CCORR_NORMED ? 0 :
@@ -345,10 +346,10 @@ namespace LandmarkDetector
 	}
 
 	// Computing landmarks (to be drawn later possibly)
-	vector<cv::Point2f> CalculateVisibleLandmarks(const cv::Mat_<float>& shape2D, const cv::Mat_<int>& visibilities)
+	std::vector<cv::Point2f> CalculateVisibleLandmarks(const cv::Mat_<float>& shape2D, const cv::Mat_<int>& visibilities)
 	{
 		int n = shape2D.rows / 2;
-		vector<cv::Point2f> landmarks;
+		std::vector<cv::Point2f> landmarks;
 
 		for (int i = 0; i < n; ++i)
 		{
@@ -364,11 +365,11 @@ namespace LandmarkDetector
 	}
 
 	// Computing landmarks (to be drawn later possibly)
-	vector<cv::Point2f> CalculateAllLandmarks(const cv::Mat_<float>& shape2D)
+	std::vector<cv::Point2f> CalculateAllLandmarks(const cv::Mat_<float>& shape2D)
 	{
 
 		int n = 0;
-		vector<cv::Point2f> landmarks;
+		std::vector<cv::Point2f> landmarks;
 
 		if (shape2D.cols == 2)
 		{
@@ -398,13 +399,13 @@ namespace LandmarkDetector
 	}
 
 	// Computing landmarks (to be drawn later possibly)
-	vector<cv::Point2f> CalculateAllLandmarks(const CLNF& clnf_model)
+	std::vector<cv::Point2f> CalculateAllLandmarks(const CLNF& clnf_model)
 	{
 		return CalculateAllLandmarks(clnf_model.detected_landmarks);
 	}
 
 	// Computing landmarks (to be drawn later possibly)
-	vector<cv::Point2f> CalculateVisibleLandmarks(const CLNF& clnf_model)
+	std::vector<cv::Point2f> CalculateVisibleLandmarks(const CLNF& clnf_model)
 	{
 		// If the detection was not successful no landmarks are visible
 		if (clnf_model.detection_success)
@@ -415,15 +416,15 @@ namespace LandmarkDetector
 		}
 		else
 		{
-			return vector<cv::Point2f>();
+			return std::vector<cv::Point2f>();
 		}
 	}
 
 	// Computing eye landmarks (to be drawn later or in different interfaces)
-	vector<cv::Point2f> CalculateVisibleEyeLandmarks(const CLNF& clnf_model)
+	std::vector<cv::Point2f> CalculateVisibleEyeLandmarks(const CLNF& clnf_model)
 	{
 
-		vector<cv::Point2f> to_return;
+		std::vector<cv::Point2f> to_return;
 		// If the model has hierarchical updates draw those too
 		for (size_t i = 0; i < clnf_model.hierarchical_models.size(); ++i)
 		{
@@ -442,10 +443,10 @@ namespace LandmarkDetector
 		return to_return;
 	}
 	// Computing the 3D eye landmarks
-	vector<cv::Point3f> Calculate3DEyeLandmarks(const CLNF& clnf_model, float fx, float fy, float cx, float cy)
+	std::vector<cv::Point3f> Calculate3DEyeLandmarks(const CLNF& clnf_model, float fx, float fy, float cx, float cy)
 	{
 
-		vector<cv::Point3f> to_return;
+		std::vector<cv::Point3f> to_return;
 
 		for (size_t i = 0; i < clnf_model.hierarchical_models.size(); ++i)
 		{
@@ -469,10 +470,10 @@ namespace LandmarkDetector
 	}
 
 	// Computing eye landmarks (to be drawn later or in different interfaces)
-	vector<cv::Point2f> CalculateAllEyeLandmarks(const CLNF& clnf_model)
+	std::vector<cv::Point2f> CalculateAllEyeLandmarks(const CLNF& clnf_model)
 	{
 
-		vector<cv::Point2f> to_return;
+		std::vector<cv::Point2f> to_return;
 		// If the model has hierarchical updates draw those too
 		for (size_t i = 0; i < clnf_model.hierarchical_models.size(); ++i)
 		{
@@ -496,12 +497,12 @@ namespace LandmarkDetector
 	//============================================================================
 	// Face detection helpers
 	//============================================================================
-	bool DetectFaces(vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, float min_width, cv::Rect_<float> roi)
+	bool DetectFaces(std::vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, float min_width, cv::Rect_<float> roi)
 	{
 		cv::CascadeClassifier classifier("./classifiers/haarcascade_frontalface_alt.xml");
 		if (classifier.empty())
 		{
-			cout << "Couldn't load the Haar cascade classifier" << endl;
+			std::cout << "Couldn't load the Haar cascade classifier" << std::endl;
 			return false;
 		}
 		else
@@ -511,10 +512,10 @@ namespace LandmarkDetector
 
 	}
 
-	bool DetectFaces(vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, cv::CascadeClassifier& classifier, float min_width, cv::Rect_<float> roi)
+	bool DetectFaces(std::vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, cv::CascadeClassifier& classifier, float min_width, cv::Rect_<float> roi)
 	{
 
-		vector<cv::Rect> face_detections;
+		std::vector<cv::Rect> face_detections;
 		if (min_width == -1)
 		{
 			classifier.detectMultiScale(intensity, face_detections, 1.2, 2, 0, cv::Size(50, 50));
@@ -556,7 +557,7 @@ namespace LandmarkDetector
 	bool DetectSingleFace(cv::Rect_<float>& o_region, const cv::Mat_<uchar>& intensity_image, cv::CascadeClassifier& classifier, cv::Point preference, float min_width, cv::Rect_<float> roi)
 	{
 		// The tracker can return multiple faces
-		vector<cv::Rect_<float> > face_detections;
+		std::vector<cv::Rect_<float> > face_detections;
 
 		bool detect_success = LandmarkDetector::DetectFaces(face_detections, intensity_image, classifier, min_width, roi);
 
@@ -612,7 +613,8 @@ namespace LandmarkDetector
 		return detect_success;
 	}
 
-	bool DetectFacesHOG(vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, std::vector<float>& confidences, float min_width, cv::Rect_<float> roi)
+	bool DetectFacesHOG(std::vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, 
+		std::vector<float>& confidences, float min_width, cv::Rect_<float> roi)
 	{
 		dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
 
@@ -620,7 +622,8 @@ namespace LandmarkDetector
 
 	}
 
-	bool DetectFacesHOG(vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, dlib::frontal_face_detector& detector, std::vector<float>& o_confidences, float min_width, cv::Rect_<float> roi)
+	bool DetectFacesHOG(std::vector<cv::Rect_<float> >& o_regions, const cv::Mat_<uchar>& intensity, 
+		dlib::frontal_face_detector& detector, std::vector<float>& o_confidences, float min_width, cv::Rect_<float> roi)
 	{
 		if (detector.num_detectors() == 0)
 		{
@@ -679,8 +682,8 @@ namespace LandmarkDetector
 		}
 
 		// The tracker can return multiple faces
-		vector<cv::Rect_<float> > face_detections;
-		vector<float> confidences;
+		std::vector<cv::Rect_<float> > face_detections;
+		std::vector<float> confidences;
 		bool detect_success = LandmarkDetector::DetectFacesHOG(face_detections, intensity_img, detector, confidences, min_width, roi);
 
 		// In case of multiple faces pick the biggest one
@@ -753,18 +756,20 @@ namespace LandmarkDetector
 		return detect_success;
 	}
 
-bool DetectFacesMTCNN(vector<cv::Rect_<float> >& o_regions, const cv::Mat& image, LandmarkDetector::FaceDetectorMTCNN& detector, std::vector<float>& o_confidences)
+bool DetectFacesMTCNN(std::vector<cv::Rect_<float> >& o_regions, const cv::Mat& image, LandmarkDetector::FaceDetectorMTCNN& detector, 
+	std::vector<float>& o_confidences)
 {
 	detector.DetectFaces(o_regions, image, o_confidences);
 
 	return o_regions.size() > 0;
 }
 
-bool DetectSingleFaceMTCNN(cv::Rect_<float>& o_region, const cv::Mat& image, LandmarkDetector::FaceDetectorMTCNN& detector, float& confidence, cv::Point preference)
+bool DetectSingleFaceMTCNN(cv::Rect_<float>& o_region, const cv::Mat& image, LandmarkDetector::FaceDetectorMTCNN& detector, 
+	float& confidence, cv::Point preference)
 {
 	// The tracker can return multiple faces
-	vector<cv::Rect_<float> > face_detections;
-	vector<float> confidences;
+	std::vector<cv::Rect_<float> > face_detections;
+	std::vector<float> confidences;
 
 	detector.DetectFaces(face_detections, image, confidences);
 

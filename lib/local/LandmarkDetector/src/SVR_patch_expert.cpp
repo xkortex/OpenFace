@@ -114,7 +114,7 @@ SVR_patch_expert::SVR_patch_expert(const SVR_patch_expert& other) : weights(othe
 }
 
 //===========================================================================
-void SVR_patch_expert::Read(ifstream &stream)
+void SVR_patch_expert::Read(std::ifstream &stream)
 {
 
 	// A sanity check when reading patch experts
@@ -269,7 +269,7 @@ Multi_SVR_patch_expert::Multi_SVR_patch_expert(const Multi_SVR_patch_expert& oth
 }
 
 //===========================================================================
-void Multi_SVR_patch_expert::Read(ifstream &stream)
+void Multi_SVR_patch_expert::Read(std::ifstream &stream)
 {
 	// A sanity check when reading patch experts
 	int type;

@@ -69,8 +69,6 @@ static void printErrorAndAbort( const std::string & error )
 #define FATAL_STREAM( stream ) \
 printErrorAndAbort( std::string( "Fatal error: " ) + stream )
 
-using namespace std;
-
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
 const std::string currentDateTime() {
     time_t     now = time(0);
@@ -84,14 +82,14 @@ const std::string currentDateTime() {
     return buf;
 }
 
-vector<string> get_arguments(int argc, char **argv)
+std::vector<std::string> get_arguments(int argc, char **argv)
 {
 
-	vector<string> arguments;
+	std::vector<std::string> arguments;
 
 	for(int i = 1; i < argc; ++i)
 	{
-		arguments.push_back(string(argv[i]));
+		arguments.push_back(std::string(argv[i]));
 	}
 	return arguments;
 }
@@ -99,10 +97,10 @@ vector<string> get_arguments(int argc, char **argv)
 int main (int argc, char **argv)
 {
 
-	vector<string> arguments = get_arguments(argc, argv);
+	std::vector<std::string> arguments = get_arguments(argc, argv);
 
 	// Some initial parameters that can be overriden from command line	
-	string outroot, outfile;
+	std::string outroot, outfile;
 
 	TCHAR NPath[200];
 	GetCurrentDirectory(200, NPath);
@@ -154,13 +152,13 @@ int main (int argc, char **argv)
 	std::filesystem::path dir(outroot);
 	std::filesystem::create_directory(dir);
 
-	string out_file = outroot + outfile;
+	std::string out_file = outroot + outfile;
 	// saving the videos
 	cv::VideoWriter video_writer(out_file, CV_FOURCC('D','I','V','X'), 30, img.size(), true);
 
-	ofstream outlog;
-	outlog.open((outroot + outfile + ".log").c_str(), ios_base::out);
-	outlog << "frame, time(ms)" << endl;
+	std::ofstream outlog;
+	outlog.open((outroot + outfile + ".log").c_str(), std::ios_base::out);
+	outlog << "frame, time(ms)" << std::endl;
 
 	double freq = cv::getTickFrequency();
 
@@ -179,7 +177,7 @@ int main (int argc, char **argv)
 		video_writer << img;
 
 		outlog << frameProc + 1 << " " << curr_time;
-		outlog << endl;
+		outlog << std::endl;
 						
 		
 		cv::imshow("rec", img);

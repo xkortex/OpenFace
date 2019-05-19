@@ -127,13 +127,13 @@ cnn_convolutional_layers_weights(other.cnn_convolutional_layers_weights)
 
 //===========================================================================
 // Read in the landmark detection validation module
-void DetectionValidator::Read(string location)
+void DetectionValidator::Read(std::string location)
 {
 
-	ifstream detection_validator_stream (location, ios::in|ios::binary);
+	std::ifstream detection_validator_stream (location, std::ios::in | std::ios::binary);
 	if (detection_validator_stream.is_open())	
 	{				
-		detection_validator_stream.seekg (0, ios::beg);
+		detection_validator_stream.seekg (0, std::ios::beg);
 
 		// Read validator type
 		int validator_type;
@@ -141,7 +141,7 @@ void DetectionValidator::Read(string location)
 
 		if (validator_type != 3)
 		{
-			cout << "ERROR: Using old face validator, no longer supported" << endl;
+			std::cout << "ERROR: Using old face validator, no longer supported" << std::endl;
 		}
 
 		// Read the number of views (orientations) within the validator
@@ -218,11 +218,11 @@ void DetectionValidator::Read(string location)
 						int num_kernels;
 						detection_validator_stream.read((char*)&num_kernels, 4);
 
-						vector<vector<cv::Mat_<float> > > kernels;
+						std::vector<std::vector<cv::Mat_<float> > > kernels;
 
 						kernels.resize(num_in_maps);
 
-						vector<float> biases;
+						std::vector<float> biases;
 						for (int k = 0; k < num_kernels; ++k)
 						{
 							float bias;
@@ -246,7 +246,7 @@ void DetectionValidator::Read(string location)
 						cnn_convolutional_layers[i].push_back(kernels);
 
 						// Rearrange the kernels for faster inference with FFT
-						vector<vector<cv::Mat_<float> > > kernels_rearr;
+						std::vector<std::vector<cv::Mat_<float> > > kernels_rearr;
 						kernels_rearr.resize(num_kernels);
 
 						// Fill up the rearranged layer
@@ -305,7 +305,7 @@ void DetectionValidator::Read(string location)
 	}
 	else
 	{
-		cout << "WARNING: Can't find the Face checker location" << endl;
+		std::cout << "WARNING: Can't find the Face checker location" << std::endl;
 	}
 }
 
@@ -398,10 +398,10 @@ double DetectionValidator::CheckCNN(const cv::Mat_<float>& warped_img, int view_
 	int cnn_layer = 0;
 	int fully_connected_layer = 0;
 
-	vector<cv::Mat_<float> > input_maps;
+	std::vector<cv::Mat_<float> > input_maps;
 	input_maps.push_back(img);
 
-	vector<cv::Mat_<float> > outputs;
+	std::vector<cv::Mat_<float> > outputs;
 
 	for (size_t layer = 0; layer < cnn_layer_types[view_id].size(); ++layer)
 	{

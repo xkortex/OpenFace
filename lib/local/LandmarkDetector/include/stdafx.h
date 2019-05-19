@@ -40,6 +40,20 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+// Filesystem stuff
+// It can either be in std filesystem (C++17), or in experimental/filesystem (partial C++17 support) or in boost
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::filesystem;
+#else
+#include <filesystem.hpp>
+#include <filesystem/fstream.hpp>
+namespace fs = boost::filesystem;
+#endif
+
 // OpenBLAS stuff
 
 #include <openblas_config.h>

@@ -75,7 +75,7 @@ namespace CppInterop {
 			FaceModelParameters(System::String^ root, bool ceclm, bool clnf, bool clm)
 			{
 				std::string root_std = msclr::interop::marshal_as<std::string>(root);
-				vector<std::string> args;
+				std::vector<std::string> args;
 				args.push_back(root_std);
 
 				std::string model_loc = "model/main_ceclm_general.txt";
@@ -104,8 +104,8 @@ namespace CppInterop {
 			// TODO this could have optimize for demo mode (also could appropriately update sigma, reg_factor as well)
 			void optimiseForVideo()
 			{
-				params->window_sizes_small = vector<int>(4);
-				params->window_sizes_init = vector<int>(4);
+				params->window_sizes_small = std::vector<int>(4);
+				params->window_sizes_init = std::vector<int>(4);
 
 				// For fast tracking
 				params->window_sizes_small[0] = 0;
@@ -180,7 +180,7 @@ namespace CppInterop {
 
 			void optimiseForImages()
 			{
-				params->window_sizes_init = vector<int>(4);
+				params->window_sizes_init = std::vector<int>(4);
 				params->window_sizes_init[0] = 15;
 				params->window_sizes_init[1] = 13; 
 				params->window_sizes_init[2] = 11; 
@@ -331,7 +331,7 @@ namespace CppInterop {
 			}
 
 			List<System::Tuple<float,float>^>^ CalculateVisibleLandmarks() {
-				vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateVisibleLandmarks(*clnf);
+				std::vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateVisibleLandmarks(*clnf);
 				
 				auto landmarks = gcnew System::Collections::Generic::List<System::Tuple<float, float>^>();
 				for(cv::Point2f p : vecLandmarks) {
@@ -342,7 +342,7 @@ namespace CppInterop {
 			}
 
 			List<System::Tuple<float, float>^>^ CalculateAllLandmarks() {
-				vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateAllLandmarks(*clnf);
+				std::vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateAllLandmarks(*clnf);
 
 				auto landmarks = gcnew List<System::Tuple<float, float>^>();
 				for (cv::Point2f p : vecLandmarks) {
@@ -353,7 +353,7 @@ namespace CppInterop {
 			}
 
 			List<System::Tuple<float, float>^>^ CalculateAllEyeLandmarks() {
-				vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateAllEyeLandmarks(*clnf);
+				std::vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateAllEyeLandmarks(*clnf);
 
 				auto landmarks = gcnew System::Collections::Generic::List<System::Tuple<float, float>^>();
 				for (cv::Point2f p : vecLandmarks) {
@@ -364,7 +364,7 @@ namespace CppInterop {
 			}
 
 			List<System::Tuple<float, float, float>^>^ CalculateAllEyeLandmarks3D(float fx, float fy, float cx, float cy) {
-				vector<cv::Point3f> vecLandmarks = ::LandmarkDetector::Calculate3DEyeLandmarks(*clnf, fx, fy, cx, cy);
+				std::vector<cv::Point3f> vecLandmarks = ::LandmarkDetector::Calculate3DEyeLandmarks(*clnf, fx, fy, cx, cy);
 
 				auto landmarks = gcnew System::Collections::Generic::List<System::Tuple<float, float, float>^>();
 				for (cv::Point3f p : vecLandmarks) {
@@ -375,7 +375,7 @@ namespace CppInterop {
 			}
 
 			List<System::Tuple<float, float>^>^ CalculateVisibleEyeLandmarks() {
-				vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateVisibleEyeLandmarks(*clnf);
+				std::vector<cv::Point2f> vecLandmarks = ::LandmarkDetector::CalculateVisibleEyeLandmarks(*clnf);
 
 				auto landmarks = gcnew System::Collections::Generic::List<System::Tuple<float, float>^>();
 				for (cv::Point2f p : vecLandmarks) {
@@ -403,11 +403,11 @@ namespace CppInterop {
 
 				cv::Vec6f pose = ::LandmarkDetector::GetPose(*clnf, fx,fy, cx, cy);
 
-				vector<pair<cv::Point2f, cv::Point2f>> vecLines = ::Utilities::CalculateBox(pose, fx, fy, cx, cy);
+				std::vector<std::pair<cv::Point2f, cv::Point2f>> vecLines = ::Utilities::CalculateBox(pose, fx, fy, cx, cy);
 
 				auto lines = gcnew List<System::Tuple<System::Windows::Point,System::Windows::Point>^>();
 
-				for(pair<cv::Point2f, cv::Point2f> line : vecLines) {
+				for(std::pair<cv::Point2f, cv::Point2f> line : vecLines) {
 					lines->Add(gcnew System::Tuple<System::Windows::Point, System::Windows::Point>(System::Windows::Point(line.first.x, line.first.y), System::Windows::Point(line.second.x, line.second.y)));
 				}
 

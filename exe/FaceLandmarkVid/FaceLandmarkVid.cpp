@@ -59,16 +59,14 @@ static void printErrorAndAbort(const std::string & error)
 #define FATAL_STREAM( stream ) \
 printErrorAndAbort( std::string( "Fatal error: " ) + stream )
 
-using namespace std;
-
-vector<string> get_arguments(int argc, char **argv)
+std::vector<std::string> get_arguments(int argc, char **argv)
 {
 
-	vector<string> arguments;
+	std::vector<std::string> arguments;
 
 	for (int i = 0; i < argc; ++i)
 	{
-		arguments.push_back(string(argv[i]));
+		arguments.push_back(std::string(argv[i]));
 	}
 	return arguments;
 }
@@ -76,13 +74,13 @@ vector<string> get_arguments(int argc, char **argv)
 int main(int argc, char **argv)
 {
 
-	vector<string> arguments = get_arguments(argc, argv);
+	std::vector<std::string> arguments = get_arguments(argc, argv);
 
 	// no arguments: output usage
 	if (arguments.size() == 1)
 	{
-		cout << "For command line arguments see:" << endl;
-		cout << " https://github.com/TadasBaltrusaitis/OpenFace/wiki/Command-line-arguments";
+		std::cout << "For command line arguments see:" << std::endl;
+		std::cout << " https://github.com/TadasBaltrusaitis/OpenFace/wiki/Command-line-arguments";
 		return 0;
 	}
 
@@ -92,13 +90,13 @@ int main(int argc, char **argv)
 	LandmarkDetector::CLNF face_model(det_parameters.model_location);
 	if (!face_model.loaded_successfully)
 	{
-		cout << "ERROR: Could not load the landmark detector" << endl;
+		std::cout << "ERROR: Could not load the landmark detector" << std::endl;
 		return 1;
 	}
 
 	if (!face_model.eye_model)
 	{
-		cout << "WARNING: no eye model found" << endl;
+		std::cout << "WARNING: no eye model found" << std::endl;
 	}
 
 	// Open a sequence

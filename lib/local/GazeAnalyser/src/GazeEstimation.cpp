@@ -44,8 +44,6 @@
 #include "LandmarkDetectorFunc.h"
 #include "RotationHelpers.h"
 
-using namespace std;
-
 using namespace GazeAnalysis;
 
 cv::Point3f RaySphereIntersect(cv::Point3f rayOrigin, cv::Point3f rayDir, cv::Point3f sphereOrigin, float sphereRadius){

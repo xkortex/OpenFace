@@ -88,7 +88,7 @@ Patch_experts::Patch_experts(const Patch_experts& other) : patch_scaling(other.p
 }
 
 // Returns indices to landmarks that need to have patch responses computed (omits mirrored frontal landmarks for CEN as they will be computed together with their mirrored pair)
-std::vector<int> Patch_experts::Collect_visible_landmarks(vector<vector<cv::Mat_<int> > > visibilities, int scale, int view_id, int n)
+std::vector<int> Patch_experts::Collect_visible_landmarks(std::vector<std::vector<cv::Mat_<int> > > visibilities, int scale, int view_id, int n)
 {
 	std::vector<int> vis_lmk;
 	for (int i = 0; i < n; i++)
@@ -130,8 +130,9 @@ std::vector<int> Patch_experts::Collect_visible_landmarks(vector<vector<cv::Mat_
 // Additionally returns the transform from the image coordinates to the response coordinates (and vice versa).
 // The computation also requires the current landmark locations to compute response around, the PDM corresponding to the desired model, and the parameters describing its instance
 // Also need to provide the size of the area of interest and the desired scale of analysis
-void Patch_experts::Response(vector<cv::Mat_<float> >& patch_expert_responses, cv::Matx22f& sim_ref_to_img, cv::Matx22f& sim_img_to_ref, const cv::Mat_<float>& grayscale_image,
-	const PDM& pdm, const cv::Vec6f& params_global, const cv::Mat_<float>& params_local, int window_size, int scale)
+void Patch_experts::Response(std::vector<cv::Mat_<float> >& patch_expert_responses, cv::Matx22f& sim_ref_to_img, 
+	cv::Matx22f& sim_img_to_ref, const cv::Mat_<float>& grayscale_image, const PDM& pdm, const cv::Vec6f& params_global,
+	const cv::Mat_<float>& params_local, int window_size, int scale)
 {
 
 	int view_id = GetViewIdx(params_global, scale);
@@ -167,7 +168,7 @@ void Patch_experts::Response(vector<cv::Mat_<float> >& patch_expert_responses, c
 	// If using CCNF patch experts might need to precalculate Sigmas
 	if (use_ccnf)
 	{
-		vector<cv::Mat_<float> > sigma_components;
+		std::vector<cv::Mat_<float> > sigma_components;
 
 		// Retrieve the correct sigma component size
 		for (size_t w_size = 0; w_size < this->sigma_components.size(); ++w_size)
@@ -363,7 +364,8 @@ int Patch_experts::GetViewIdx(const cv::Vec6f& params_global, int scale) const
 
 
 //===========================================================================
-bool Patch_experts::Read(vector<string> intensity_svr_expert_locations, vector<string> intensity_ccnf_expert_locations, vector<string> intensity_cen_expert_locations, string early_term_loc)
+bool Patch_experts::Read(std::vector<std::string> intensity_svr_expert_locations, std::vector<std::string> intensity_ccnf_expert_locations,
+	std::vector<std::string> intensity_cen_expert_locations, std::string early_term_loc)
 {
 
 	// initialise the SVR intensity patch expert parameters
@@ -377,8 +379,8 @@ bool Patch_experts::Read(vector<string> intensity_svr_expert_locations, vector<s
 	// Reading in SVR intensity patch experts for each scales it is defined in
 	for(int scale = 0; scale < num_intensity_svr; ++scale)
 	{		
-		string location = intensity_svr_expert_locations[scale];
-		cout << "Reading the intensity SVR patch experts from: " << location << "....";
+		std::string location = intensity_svr_expert_locations[scale];
+		std::cout << "Reading the intensity SVR patch experts from: " << location << "....";
 		bool success_read = Read_SVR_patch_experts(location,  centers[scale], visibilities[scale], svr_expert_intensity[scale], patch_scaling[scale]);
 		if (!success_read)
 		{
@@ -400,8 +402,8 @@ bool Patch_experts::Read(vector<string> intensity_svr_expert_locations, vector<s
 
 	for(int scale = 0; scale < num_intensity_ccnf; ++scale)
 	{		
-		string location = intensity_ccnf_expert_locations[scale];
-		cout << "Reading the intensity CCNF patch experts from: " << location << "....";
+		std::string location = intensity_ccnf_expert_locations[scale];
+		std::cout << "Reading the intensity CCNF patch experts from: " << location << "....";
 		bool success_read = Read_CCNF_patch_experts(location,  centers[scale], visibilities[scale], ccnf_expert_intensity[scale], patch_scaling[scale]);
 
 		if (!success_read)
@@ -429,8 +431,8 @@ bool Patch_experts::Read(vector<string> intensity_svr_expert_locations, vector<s
 
 	for (int scale = 0; scale < num_intensity_cen; ++scale)
 	{
-		string location = intensity_cen_expert_locations[scale];
-		cout << "Reading the intensity CEN patch experts from: " << location << "....";
+		std::string location = intensity_cen_expert_locations[scale];
+		std::cout << "Reading the intensity CEN patch experts from: " << location << "....";
 		bool success_read = Read_CEN_patch_experts(location, centers[scale], visibilities[scale], cen_expert_intensity[scale], patch_scaling[scale]);
 		if (!success_read)
 		{
@@ -448,7 +450,7 @@ bool Patch_experts::Read(vector<string> intensity_svr_expert_locations, vector<s
 	// Reading in early termination parameters
 	if (!early_term_loc.empty())
 	{
-		ifstream earlyTermFile(early_term_loc.c_str(), ios_base::in);
+		std::ifstream earlyTermFile(early_term_loc.c_str(), std::ios_base::in);
 
 		if (!earlyTermFile.is_open())
 		{
@@ -480,10 +482,11 @@ bool Patch_experts::Read(vector<string> intensity_svr_expert_locations, vector<s
 	return true;
 }
 //======================= Reading the SVR patch experts =========================================//
-bool Patch_experts::Read_SVR_patch_experts(string expert_location, std::vector<cv::Vec3d>& centers, std::vector<cv::Mat_<int> >& visibility, std::vector<std::vector<Multi_SVR_patch_expert> >& patches, double& scale)
+bool Patch_experts::Read_SVR_patch_experts(std::string expert_location, std::vector<cv::Vec3d>& centers,
+	std::vector<cv::Mat_<int> >& visibility, std::vector<std::vector<Multi_SVR_patch_expert> >& patches, double& scale)
 {
 
-	ifstream patchesFile(expert_location.c_str(), ios_base::in);
+	std::ifstream patchesFile(expert_location.c_str(), std::ios_base::in);
 
 	if(patchesFile.is_open())
 	{
@@ -538,21 +541,22 @@ bool Patch_experts::Read_SVR_patch_experts(string expert_location, std::vector<c
 			}
 		}
 	
-		cout << "Done" << endl;
+		std::cout << "Done" << std::endl;
 		return true;
 	}
 	else
 	{
-		cout << "Can't find/open the patches file" << endl;
+		std::cout << "Can't find/open the patches file" << std::endl;
 		return false;
 	}
 }
 
 //======================= Reading the CCNF patch experts =========================================//
-bool Patch_experts::Read_CCNF_patch_experts(string patchesFileLocation, std::vector<cv::Vec3d>& centers, std::vector<cv::Mat_<int> >& visibility, std::vector<std::vector<CCNF_patch_expert> >& patches, double& patchScaling)
+bool Patch_experts::Read_CCNF_patch_experts(std::string patchesFileLocation, std::vector<cv::Vec3d>& centers,
+	std::vector<cv::Mat_<int> >& visibility, std::vector<std::vector<CCNF_patch_expert> >& patches, double& patchScaling)
 {
 
-	ifstream patchesFile(patchesFileLocation.c_str(), ios::in | ios::binary);
+	std::ifstream patchesFile(patchesFileLocation.c_str(), std::ios::in | std::ios::binary);
 
 	if(patchesFile.is_open())
 	{
@@ -588,10 +592,10 @@ bool Patch_experts::Read_CCNF_patch_experts(string patchesFileLocation, std::vec
 		int num_sigma_comp;
 		patchesFile.read ((char*)&num_win_sizes, 4);
 
-		vector<int> windows;
+		std::vector<int> windows;
 		windows.resize(num_win_sizes);
 
-		vector<vector<cv::Mat_<float> > > sigma_components;
+		std::vector<std::vector<cv::Mat_<float> > > sigma_components;
 		sigma_components.resize(num_win_sizes);
 
 		for (int w=0; w < num_win_sizes; ++w)
@@ -621,21 +625,22 @@ bool Patch_experts::Read_CCNF_patch_experts(string patchesFileLocation, std::vec
 				patches[i][j].Read(patchesFile, windows, sigma_components);
 			}
 		}
-		cout << "Done" << endl;
+		std::cout << "Done" << std::endl;
 		return true;
 	}
 	else
 	{
-		cout << "Can't find/open the patches file" << endl;
+		std::cout << "Can't find/open the patches file" << std::endl;
 		return false;
 	}
 }
 
 //======================= Reading the CEN patch experts =========================================//
-bool Patch_experts::Read_CEN_patch_experts(string expert_location, std::vector<cv::Vec3d>& centers, std::vector<cv::Mat_<int> >& visibility, std::vector<std::vector<CEN_patch_expert> >& patches, double& scale)
+bool Patch_experts::Read_CEN_patch_experts(std::string expert_location, std::vector<cv::Vec3d>& centers, 
+	std::vector<cv::Mat_<int> >& visibility, std::vector<std::vector<CEN_patch_expert> >& patches, double& scale)
 {
 
-	ifstream patchesFile(expert_location.c_str(), ios::in | ios::binary);
+	std::ifstream patchesFile(expert_location.c_str(), std::ios::in | std::ios::binary);
 
 	if (patchesFile.is_open())
 	{
@@ -680,12 +685,12 @@ bool Patch_experts::Read_CEN_patch_experts(string expert_location, std::vector<c
 				patches[i][j].Read(patchesFile);
 			}
 		}
-		cout << "Done" << endl;
+		std::cout << "Done" << std::endl;
 		return true;
 	}
 	else
 	{
-		cout << "Could not find CEN patch experts, for instructions of how to download them, see https://github.com/TadasBaltrusaitis/OpenFace/wiki/Model-download \n" << endl;
+		std::cout << "Could not find CEN patch experts, for instructions of how to download them, see https://github.com/TadasBaltrusaitis/OpenFace/wiki/Model-download \n" << std::endl;
 		return false;
 	}
 }
