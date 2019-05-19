@@ -485,7 +485,7 @@ void PDM::UpdateModelParameters(const cv::Mat_<float>& delta_p, cv::Mat_<float>&
 	cv::Vec3f euler = Utilities::AxisAngle2Euler(axis_angle);
 
 	// Temporary fix to numerical instability
-	if (isnan(euler[0]) || isnan(euler[1]) || isnan(euler[2]))
+	if (std::isnan(euler[0]) || std::isnan(euler[1]) || std::isnan(euler[2]))
 	{
 		euler[0] = 0;
 		euler[1] = 0;
