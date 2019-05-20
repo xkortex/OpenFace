@@ -54,6 +54,8 @@ target_link_libraries(LandmarkDetector PUBLIC stdc++fs)
 if(${Boost_FOUND})
 	target_include_directories(LandmarkDetector PUBLIC ${Boost_INCLUDE_DIRS})
 	target_link_libraries(LandmarkDetector PUBLIC ${Boost_LIBRARIES})
+else()
+	target_link_libraries(LandmarkDetector PUBLIC stdc++fs)
 endif()
 
 target_include_directories(LandmarkDetector PRIVATE ${OpenBLAS_INCLUDE_DIR})
