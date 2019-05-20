@@ -34,7 +34,6 @@ target_include_directories(Utilities PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 target_link_libraries(Utilities PUBLIC ${OpenCV_LIBS})
 target_link_libraries(Utilities PUBLIC dlib::dlib)
-target_link_libraries(Utilities PUBLIC stdc++fs)
 
 if(${Boost_FOUND})
 	target_include_directories(Utilities PUBLIC ${Boost_INCLUDE_DIRS})
