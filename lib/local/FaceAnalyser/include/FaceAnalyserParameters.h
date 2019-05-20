@@ -38,11 +38,6 @@
 
 #include <stdafx_fa.h>
 
-#include <vector>
-#include <opencv2/core/core.hpp>
-
-#include <filesystem>
-
 namespace FaceAnalysis
 {
 
