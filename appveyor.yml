@@ -27,7 +27,7 @@ install:
   - ps: Invoke-WebRequest $source -OutFile $destination
 
 build:
-  project: OpenFace_vs2017.sln
+  project: OpenFace.sln
   verbosity: minimal
 test_script:
 # C++  
