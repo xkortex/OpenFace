@@ -1,0 +1,17 @@
+---
+# Variables can be set from the shell: `DOCKERTAG=foo docker-compose build`
+# or from a .env file. See docker-compose documentation for details
+# Variable DOCKERUSER should be set to your dockerhub user
+# Alternatively, use a docker registry url as the image name
+version: '3.7'
+services:
+  openface:
+    container_name: openface
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    image: "${DOCKERUSER:-openface}/openface:${DOCKERTAG:-latest}"
+    command: ["bash"]
+
+...
