@@ -58,8 +58,8 @@ RUN curl http://dlib.net/files/dlib-19.13.tar.bz2 -LO &&\
     mv dlib-19.13 dlib &&\
     mkdir -p dlib/build &&\
     cd dlib/build &&\
-    cmake -j "$((`nproc`<2?1:$((`nproc`-1))))" .. && \
-    cmake --build . --config Release && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. &&\
+    make -j "$((`nproc`<2?1:$((`nproc`-1))))" && \
     make install && \
     DESTDIR=/root/diff make install &&\
     ldconfig
