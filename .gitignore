@@ -1,3 +1,5 @@
+lib/local/LandmarkDetector/model/patch_experts/cen_patches_*.dat
+
 matlab_version/experiments_menpo/out_semifrontal/
 /x64/Release/
 /x64/Debug/
@@ -100,3 +102,6 @@ lib/local/Utilities/Debug/
 lib/3rdParty/CameraEnumerator/Debug/
 lib/local/CppInerop/Debug/
 *.user
+
+# IDE-generated folders
+.idea
