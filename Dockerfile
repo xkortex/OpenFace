@@ -47,7 +47,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -qq -y \
         build-essential llvm clang-3.7 libc++-dev \
-        python-dev git checkinstall&& \
+        python-dev git checkinstall ninja-build && \
     rm -rf /var/lib/apt/lists/*
 
 # ==================== Building dlib ===========================
@@ -58,10 +58,10 @@ RUN curl http://dlib.net/files/dlib-19.13.tar.bz2 -LO &&\
     mv dlib-19.13 dlib &&\
     mkdir -p dlib/build &&\
     cd dlib/build &&\
-    cmake -DCMAKE_BUILD_TYPE=Release .. &&\
-    make -j "$((`nproc`<2?1:$((`nproc`-1))))" && \
-    make install && \
-    DESTDIR=/root/diff make install &&\
+    cmake -DCMAKE_BUILD_TYPE=Release -G Ninja .. &&\
+    ninja && \
+    ninja install && \
+    DESTDIR=/root/diff ninja install &&\
     ldconfig
 
 # ==================== Building OpenCV ======================
@@ -74,13 +74,13 @@ RUN curl https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz -LO &
     mkdir -p opencv/build && \
     cd opencv/build && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D WITH_TBB=ON -D WITH_CUDA=OFF \
-    -DWITH_QT=OFF -DWITH_GTK=OFF\
-    .. && \
-    make -j "$((`nproc`<2?1:$((`nproc`-1))))" && \
-    make install &&\
-    DESTDIR=/root/diff make install
+        -D CMAKE_INSTALL_PREFIX=/usr/local \
+        -D WITH_TBB=ON -D WITH_CUDA=OFF \
+        -DWITH_QT=OFF -DWITH_GTK=OFF\
+        -G Ninja .. && \
+    ninja && \
+    ninja install &&\
+    DESTDIR=/root/diff ninja install
 
 # ==================== Building OpenFace ===========================
 FROM cv_deps as openface
@@ -98,9 +98,9 @@ COPY --from=model_data /data/patch_experts/* \
     /root/openface/lib/local/LandmarkDetector/model/patch_experts/
 
 RUN mkdir -p build && cd build && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE .. && \
-    make -j "$((`nproc`<2?1:$((`nproc`-1))))" &&\
-    DESTDIR=/root/diff make install
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -G Ninja .. && \
+    ninja &&\
+    DESTDIR=/root/diff ninja install
 
 
 # ==================== Streamline container ===========================
