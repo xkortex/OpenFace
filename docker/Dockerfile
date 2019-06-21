@@ -90,12 +90,6 @@ COPY ./ ./
 COPY --from=model_data /data/patch_experts/* \
     /root/openface/lib/local/LandmarkDetector/model/patch_experts/
 
-#RUN apt-get update -qq && apt-get install -qq -y \
-#        g++-8 &&\
-#    rm -rf /var/lib/apt/lists/* &&\
-#    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
-
-
 RUN mkdir -p build && cd build && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE -G Ninja .. && \
     ninja &&\
@@ -111,7 +105,6 @@ WORKDIR /root
 
 # Copy in only necessary libraries
 COPY --from=openface /root/diff /
-COPY docker/entrypoint.sh /
 
 # Since we "imported" the build artifacts, we need to reconfigure ld
 RUN ldconfig
