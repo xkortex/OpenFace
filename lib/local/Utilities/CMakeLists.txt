@@ -37,7 +37,7 @@ target_link_libraries(Utilities PUBLIC dlib::dlib)
 
 if(${Boost_FOUND})
 	target_include_directories(Utilities PUBLIC ${Boost_INCLUDE_DIRS})
-	target_link_libraries(Utilities PUBLIC ${Boost_LIBRARIES})
+	target_link_libraries(Utilities PUBLIC ${Boost_LIBRARIES} stdc++fs)
 else()
 	target_link_libraries(Utilities PUBLIC stdc++fs)
 endif()

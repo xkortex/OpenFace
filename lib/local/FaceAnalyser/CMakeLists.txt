@@ -42,9 +42,12 @@ target_link_libraries(FaceAnalyser PUBLIC dlib::dlib)
 
 if(${Boost_FOUND})
 	target_include_directories(FaceAnalyser PUBLIC ${Boost_INCLUDE_DIRS})
-	target_link_libraries(FaceAnalyser PUBLIC ${Boost_LIBRARIES})
+	target_link_libraries(FaceAnalyser PUBLIC ${Boost_LIBRARIES} stdc++fs)
+	MESSAGE(WARNING "Using BOOST in LMD")
 else()
 	target_link_libraries(FaceAnalyser PUBLIC stdc++fs)
+	MESSAGE(WARNING "Using FS in LMD")
+
 endif()
 
 target_include_directories(FaceAnalyser PRIVATE ${OpenBLAS_INCLUDE_DIR})

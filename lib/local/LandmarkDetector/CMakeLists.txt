@@ -52,9 +52,11 @@ target_link_libraries(LandmarkDetector PUBLIC dlib::dlib)
 
 if(${Boost_FOUND})
 	target_include_directories(LandmarkDetector PUBLIC ${Boost_INCLUDE_DIRS})
-	target_link_libraries(LandmarkDetector PUBLIC ${Boost_LIBRARIES})
+	target_link_libraries(LandmarkDetector PUBLIC ${Boost_LIBRARIES} stdc++fs)
+	MESSAGE(WARNING "Using BOOST in LMD - stdc++ fails to link")
 else()
 	target_link_libraries(LandmarkDetector PUBLIC stdc++fs)
+	MESSAGE(WARNING "Using FS in LMD. Linking stdc++ fs")
 endif()
 
 target_include_directories(LandmarkDetector PRIVATE ${OpenBLAS_INCLUDE_DIR})
