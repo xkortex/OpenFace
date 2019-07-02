@@ -1,5 +1,6 @@
 lib/local/LandmarkDetector/model/patch_experts/cen_patches_*.dat
 
+cmake-build-debug
 matlab_version/experiments_menpo/out_semifrontal/
 /x64/Release/
 /x64/Debug/
