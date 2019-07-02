@@ -52,7 +52,7 @@ target_link_libraries(LandmarkDetector PUBLIC dlib::dlib)
 
 if(${Boost_FOUND})
 	target_include_directories(LandmarkDetector PUBLIC ${Boost_INCLUDE_DIRS})
-	target_link_libraries(LandmarkDetector PUBLIC ${Boost_LIBRARIES})
+	target_link_libraries(LandmarkDetector PUBLIC ${Boost_LIBRARIES} stdc++fs)
 else()
 	target_link_libraries(LandmarkDetector PUBLIC stdc++fs)
 endif()
