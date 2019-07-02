@@ -64,7 +64,7 @@ RUN curl http://dlib.net/files/dlib-19.13.tar.bz2 -LO &&\
     ldconfig
 
 ## ==================== Building OpenCV ======================
-ENV OPENCV_VERSION=4.0.1
+ENV OPENCV_VERSION=4.1.0
 
 RUN curl https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz -LO &&\
     tar xf ${OPENCV_VERSION}.tar.gz && \
